@@ -61,3 +61,25 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+
+AT-Project-EyeTracking/UserSettings/
+
+AT-Project-EyeTracking/Temp/
+
+AT-Project-EyeTracking/obj/
+
+AT-Project-EyeTracking/Logs/
+
+AT-Project-EyeTracking/Library/BuildProfiles/
+
+AT-Project-EyeTracking/Library/ShaderCache/
+
+AT-Project-EyeTracking/Library/ScriptAssemblies/
+
+AT-Project-EyeTracking/Library/PackageCache/
+
+AT-Project-EyeTracking/Library/Artifacts/
+
+AT-Project-EyeTracking/Library/Bee/
+
+AT-Project-EyeTracking/Library/BurstCache/
