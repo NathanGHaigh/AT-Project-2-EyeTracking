@@ -124,7 +124,7 @@
       "name": "tech.eyeware.beam-eye-tracker",
       "displayName": "Beam Eye Tracker Plugin",
       "resolvedPath": "H:\\Eyetracker\\beam_eye_tracker_sdk-2.1.0\\unity\\beam-eye-tracker-plugin",
-      "editorCompatibility": "2019.1.0a1",
+      "editorCompatibility": "2019.4.0a1",
       "version": "2.1.0",
       "source": "local",
       "testable": false
