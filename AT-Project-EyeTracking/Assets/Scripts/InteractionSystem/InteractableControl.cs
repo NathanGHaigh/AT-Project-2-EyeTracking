@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 using Eyeware.BeamEyeTracker;
 using Eyeware.BeamEyeTracker.Unity;
 
@@ -32,7 +33,13 @@ namespace Interaction
         public IInteractable currentInteractable;
 
         [SerializeField]
+        private GameObject interactableReference;
+
+        [SerializeField]
         Vector3 viewPortPos;
+
+        [SerializeField]
+        InputActionReference input_action; 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         private void Awake()
         {
@@ -75,19 +82,34 @@ namespace Interaction
 
             if (Physics.SphereCast(ray, 0.5f, out RaycastHit hitInfo, maxInteractionDistance, interactableLayerMask))
             {
-                Debug.Log($"Hit: {hitInfo.collider.name}");
+                //Debug.Log($"Hit: {hitInfo.collider.name}");
 
                 IInteractable interactable = hitInfo.collider?.GetComponent<IInteractable>();
 
                 if (interactable != null)
                 {
                     currentInteractable = interactable;
-                    Debug.Log($"Current interactable: {hitInfo.collider.name}");
+                    interactableReference = hitInfo.collider.gameObject;
+                    //Debug.Log($"Current interactable: {hitInfo.collider.name}");
                 }
                 else
                 {
                     currentInteractable = null;
+                    interactableReference = null;
                 }
+            }
+            else
+            {
+                currentInteractable = null;
+                interactableReference = null;
+            }
+        }
+
+        public void OnInteract()
+        {
+            if (currentInteractable != null)
+            {
+                currentInteractable.Interact(this);
             }
         }
 

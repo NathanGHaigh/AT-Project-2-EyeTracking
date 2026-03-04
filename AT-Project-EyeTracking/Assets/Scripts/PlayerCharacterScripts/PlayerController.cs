@@ -1,4 +1,6 @@
+using Interaction;
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
@@ -20,6 +22,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] public bool IsMoving;
 
     [SerializeField] private PlayerInput playerInput;
+
+    [SerializeField] public GameObject manager;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -37,11 +41,14 @@ public class PlayerController : MonoBehaviour
     {
         playerInput.actions["Move"].performed += OnMove;
         playerInput.actions["Move"].canceled += OnMove;
+        playerInput.actions["Interact"].performed += OnInteract;
+        playerInput.actions["Interact"].canceled += OnInteract;
     }
 
     private void OnDisable()
     {
         playerInput.actions["Move"].performed -= OnMove;
+        playerInput.actions["Interact"].performed -= OnInteract;
     }
 
     // Update is called once per frame
@@ -86,10 +93,17 @@ public class PlayerController : MonoBehaviour
         characterController.Move(gravityVector);
     }
 
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        Debug.Log("Called Interact");
+        manager.GetComponent<InteractableControl>().OnInteract();
+    }
     #region To fix error: Ambiguous invocation of OnMove(InputAction.CallbackContext) and OnMove(InputValue)
     private void OnMove(InputValue value)
     {
         //To fix error: Ambiguous invocation of OnMove(InputAction.CallbackContext) and OnMove(InputValue)
     }
+
+    private void OnInteract(InputValue value) { }
     #endregion
 }
