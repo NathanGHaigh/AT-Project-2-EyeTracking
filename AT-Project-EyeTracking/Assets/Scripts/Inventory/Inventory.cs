@@ -31,20 +31,14 @@ public class Inventory : MonoBehaviour
 
     public void AddItem(Item itemToAdd)
     {
-        foreach (InvenSlot slot in inventorySlots)
+        var emptySlot = inventorySlots.Find(slot => !slot.HasItem());
+        if (emptySlot != null)
         {
-            if (slot.HasItem() && slot.GetItem() == itemToAdd)
-            {
-
-
-            }
+            emptySlot.SetItem(itemToAdd);
         }
-        foreach(InvenSlot slot in inventorySlots)
+        else
         {
-            if(!slot.HasItem())
-            {
-                slot.SetItem(itemToAdd);
-            }
+            Debug.Log("No empty inventory slots!");
         }
 
     }
