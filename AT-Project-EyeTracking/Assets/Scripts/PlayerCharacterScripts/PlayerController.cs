@@ -24,6 +24,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerInput playerInput;
 
     [SerializeField] public GameObject manager;
+
+
+    public bool inventoryActive = false;
+
+    public GameObject InventoryUI;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -43,6 +48,7 @@ public class PlayerController : MonoBehaviour
         playerInput.actions["Move"].canceled += OnMove;
         playerInput.actions["Interact"].performed += OnInteract;
         playerInput.actions["Interact"].canceled += OnInteract;
+        playerInput.actions["ToggleInventory"].performed += ToggleInventory;
     }
 
     private void OnDisable()
@@ -54,6 +60,14 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!inventoryActive)
+        {
+            InventoryUI.SetActive(false);
+        }
+        else
+        {
+            InventoryUI.SetActive(true);
+        }
         Move(MoveInput);
         CheckGrounded();
         ApplyGravity();
@@ -97,6 +111,20 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("Called Interact");
         manager.GetComponent<InteractableControl>().OnInteract();
+    }
+
+    private void ToggleInventory(InputAction.CallbackContext context)
+    {
+        Debug.Log("PressedToggleInventory");
+        if (!inventoryActive)
+        {
+            inventoryActive = true;
+        }
+        else
+        {
+            inventoryActive = false;
+
+        }
     }
     #region To fix error: Ambiguous invocation of OnMove(InputAction.CallbackContext) and OnMove(InputValue)
     private void OnMove(InputValue value)

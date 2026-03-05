@@ -56,6 +56,7 @@ public class InvenSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     public void OnPointerEnter(PointerEventData eventData)
     {
         hovering = true;
+        Debug.Log(gameObject.name);
     }
 
     public void OnPointerExit(PointerEventData eventData)
