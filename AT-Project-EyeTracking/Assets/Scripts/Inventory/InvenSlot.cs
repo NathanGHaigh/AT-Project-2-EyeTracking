@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Eyeware.BeamEyeTracker.Unity;
 
 public class InvenSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -15,6 +16,19 @@ public class InvenSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     {
         iconImage = transform.GetChild(0).GetComponent<Image>();
         
+    }
+
+    private void Update()
+    {
+        if (hovering)
+        {
+            this.GetComponent<Image>().color = Color.red;
+        }
+        else
+        {
+            this.GetComponent<Image>().color = Color.green;
+
+        }
     }
 
     public Item GetItem()

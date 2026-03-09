@@ -9,13 +9,15 @@ public class Door : MonoBehaviour
     [SerializeField]
     bool isOpening;
     [SerializeField]
-    NavMeshObstacle doorCollider;
-    [SerializeField]
-    GameObject doorMesh;
-
+    Animator doorAnim;
     public void Start()
     {
-        isOpen = false;   
+        isOpen = false;
+    }
+
+    public void Update()
+    {
+
     }
 
     public void Interacted()
@@ -29,17 +31,18 @@ public class Door : MonoBehaviour
             OpenDoor();
         }
     }
+
     public void OpenDoor()
     {
-        doorMesh.SetActive(false);
-        doorCollider.enabled = false;
         isOpen = true;
+        doorAnim.SetTrigger("Open");
+
     }
 
     public void CloseDoor()
     {
-        doorMesh.SetActive(true);
-        doorCollider.enabled = true;
         isOpen = false;
+        doorAnim.SetTrigger("Close");
+
     }
 }
