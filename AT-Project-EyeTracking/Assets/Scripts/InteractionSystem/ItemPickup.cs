@@ -10,26 +10,20 @@ namespace Interaction
 
         [SerializeField]
         Item Item;
-        [SerializeField]
-        GameObject prefab;
         public Inventory inventory;
-        [SerializeField]
-        GameObject model;
 
         void Start()
         {
             inventory = FindAnyObjectByType<Inventory>();
-            
-            Instantiate(prefab, model.transform.position, transform.rotation);
-
         }
-        public string MessageInteract => throw new System.NotImplementedException();
+        public string MessageInteract => "Press E to Pick Up";
 
         public void Interact(InteractableControl interactableControl)
         {
             Debug.Log($"Adding Item{Item}");
             inventory.AddItem(Item);
             this.enabled = false;
+            Destroy(this.gameObject);
         }
 
         // Update is called once per frame

@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d07c79d08de2f7408679ae02777deb2, type: 3}
+  m_Script: {fileID: 11500000, guid: 800ca70f03e9ef44ebd1008cba3d1b90, type: 3}
   m_Name: KeyCard-0
   m_EditorClassIdentifier: 
   id: 0
   objName: Keycard Level 0
-  icon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  prefab: {fileID: 0}
+  icon: {fileID: 21300000, guid: 6256b34581ad977428c498ee2054c105, type: 3}
+  prefab: {fileID: 919132149155446097, guid: 9264d004b43ae6c418b060f74308b782, type: 3}
+  AccessLevel: 0

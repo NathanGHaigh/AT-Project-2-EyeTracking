@@ -5,16 +5,16 @@ m_ProjectFiles:
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 639081772413398126
-    m_Hash: 1676138164
+      ticks: 639087738391568381
+    m_Hash: 1027641758
   m_LockFileStatus:
     m_FilePath: F:/UWE Everything Folder/Year 3/AT/P2/GIT/AT-Project-2-EyeTracking/AT-Project-EyeTracking/Packages/packages-lock.json
     m_PathExists: 1
     m_ContentTrackingEnabled: 1
     m_ModificationDate:
       serializedVersion: 2
-      ticks: 639081772413772419
-    m_Hash: 1295193356
+      ticks: 639087738391594555
+    m_Hash: 397095487
 m_EmbeddedPackageManifests:
   m_ManifestsStatus: {}
 m_LocalPackages:
@@ -36,6 +36,76 @@ m_LocalPackages:
 m_ProjectPath: F:/UWE Everything Folder/Year 3/AT/P2/GIT/AT-Project-2-EyeTracking/AT-Project-EyeTracking/Packages
 m_EditorVersion: 6000.1.9f1 (ed7b183fd33d)
 m_ResolvedPackages:
+- packageId: com.unity.2d.sprite@1.0.0
+  testable: 0
+  isDirectDependency: 1
+  version: 1.0.0
+  source: 2
+  resolvedPath: F:\UWE Everything Folder\Year 3\AT\P2\GIT\AT-Project-2-EyeTracking\AT-Project-EyeTracking\Library\PackageCache\com.unity.2d.sprite@5eb30061d420
+  assetPath: Packages/com.unity.2d.sprite
+  name: com.unity.2d.sprite
+  displayName: 2D Sprite
+  author:
+    name: 
+    email: 
+    url: 
+  category: 2D
+  type: 
+  description: Use Unity Sprite Editor Window to create and edit Sprite asset properties
+    like pivot, borders and Physics shape
+  errors: []
+  versions:
+    all:
+    - 1.0.0
+    compatible:
+    - 1.0.0
+    recommended: 1.0.0
+    deprecated: []
+  dependencies: []
+  resolvedDependencies: []
+  keywords:
+  - 2d
+  - sprite
+  - sprite editor window
+  registry:
+    id: main
+    name: 
+    url: https://packages.unity.com
+    scopes: []
+    isDefault: 1
+    capabilities: 7
+    configSource: 0
+  hideInEditor: 1
+  entitlements:
+    licensingModel: 0
+  isAssetStorePackage: 0
+  datePublishedTicks: 0
+  documentationUrl: 
+  hasRepository: 0
+  repository:
+    type: 
+    url: 
+    revision: 
+    path: 
+  unityLifecycle:
+    version: 1.0.0
+    nextVersion: 
+    recommendedVersion: 
+    isDeprecated: 0
+    deprecationMessage: 
+  isDeprecated: 0
+  deprecationMessage: 
+  git:
+    hash: 
+    revision: 
+  upmReserved: 
+  assetStore:
+    productId: 
+  fingerprint: 5eb30061d42006925d91d40a6a8fca10bd64bbee
+  editorCompatibility:
+    compatibilityLevel: 0
+    minimumPackageVersion: 1.0.0
+    minimumUnityVersion: 2019.2.0a1
 - packageId: com.unity.ai.navigation@2.0.8
   testable: 0
   isDirectDependency: 1

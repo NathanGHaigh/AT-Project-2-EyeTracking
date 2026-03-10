@@ -61,7 +61,7 @@ public class RaycastFromEyes : BeamEyeTrackerMonoBehaviour
             if (Physics.SphereCast(ray, 2f, out RaycastHit hitInfo, maxRayDistance, hitMask))
             {
                 Debug.Log("Hit object: " + hitInfo.collider.tag);
-                currentViewedObject = hitInfo.collider.gameObject.transform.parent.gameObject;
+                currentViewedObject = hitInfo.collider.gameObject;
             }
             else
             {

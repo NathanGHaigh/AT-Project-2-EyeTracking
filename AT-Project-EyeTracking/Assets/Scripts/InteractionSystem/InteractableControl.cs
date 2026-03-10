@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using Eyeware.BeamEyeTracker;
 using Eyeware.BeamEyeTracker.Unity;
+using TMPro;
 
 namespace Interaction
 {
@@ -90,6 +91,7 @@ namespace Interaction
                 {
                     currentInteractable = interactable;
                     interactableReference = hitInfo.collider.gameObject;
+                    interactionCanvas.GetComponentInChildren<TextMeshProUGUI>().SetText(interactable.MessageInteract);
                     //Debug.Log($"Current interactable: {hitInfo.collider.name}");
                 }
                 else
@@ -102,6 +104,7 @@ namespace Interaction
             {
                 currentInteractable = null;
                 interactableReference = null;
+                interactionCanvas.GetComponentInChildren<TextMeshProUGUI>().SetText("");
             }
         }
 

@@ -12,9 +12,12 @@ public class InvenSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     private Image iconImage;
 
+    private Color color;
+
     private void Awake()
     {
         iconImage = transform.GetChild(0).GetComponent<Image>();
+        color = this.GetComponent<Image>().color;
         
     }
 
@@ -22,11 +25,11 @@ public class InvenSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     {
         if (hovering)
         {
-            this.GetComponent<Image>().color = Color.red;
+            this.GetComponent<Image>().color = Color.white;
         }
         else
         {
-            this.GetComponent<Image>().color = Color.green;
+            this.GetComponent<Image>().color = color;
 
         }
     }

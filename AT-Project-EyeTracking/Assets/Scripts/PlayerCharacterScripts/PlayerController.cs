@@ -3,6 +3,7 @@ using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
@@ -24,6 +25,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private PlayerInput playerInput;
 
     [SerializeField] public GameObject manager;
+
+    [SerializeField] public Item heldItem;
+
+    [SerializeField] public Image equippedItem;
 
 
     public bool inventoryActive = false;
@@ -111,6 +116,8 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("Called Interact");
         manager.GetComponent<InteractableControl>().OnInteract();
+        if(heldItem != null) 
+            ResetHeldItem();
     }
 
     private void ToggleInventory(InputAction.CallbackContext context)
@@ -125,6 +132,14 @@ public class PlayerController : MonoBehaviour
             inventoryActive = false;
 
         }
+    }
+
+    private void ResetHeldItem()
+    {
+        heldItem = null;
+        equippedItem.enabled = false;
+        equippedItem.sprite = null;
+
     }
     #region To fix error: Ambiguous invocation of OnMove(InputAction.CallbackContext) and OnMove(InputValue)
     private void OnMove(InputValue value)

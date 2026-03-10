@@ -8,15 +8,17 @@ using System.Data.Common;
 
 public class Inventory : BeamEyeTrackerMonoBehaviour
 {
+    public GameObject player;
+
+    public GameObject InventoryUI;
+
     public PlayerInput playerInput;
 
     public Camera playerCamera;
 
-    public Item keycard;
-
-    public Item eyeDrops;
-
     public Image dragImage;
+
+    public Image equippedItemImage;
 
     [SerializeField]
     BeamEyeTrackerInputDevice eyeTrackerInputDevice;
@@ -35,16 +37,18 @@ public class Inventory : BeamEyeTrackerMonoBehaviour
     RectTransform gazeIndicator;
     private Canvas parentCanvas;
 
+    [SerializeField]
+    private Item heldItem;
+
     private void OnEnable()
     {
-        playerInput.actions["DebugItems"].started += SpawnItem;
         playerInput.actions["InventorySelect"].started += StartDrag;
         playerInput.actions["InventoryPlace"].canceled += EndDrag;
     }
 
     private void OnDisable()
     {
-        playerInput.actions["DebugItems"].canceled -= SpawnItem;
+
     }
 
     private void Awake()
@@ -82,11 +86,6 @@ public class Inventory : BeamEyeTrackerMonoBehaviour
         }
 
     }
-    private void SpawnItem(InputAction.CallbackContext context)
-    {
-        AddItem(keycard);
-        AddItem(eyeDrops);
-    }
 
     private void StartDrag(InputAction.CallbackContext context)
     {
@@ -101,6 +100,16 @@ public class Inventory : BeamEyeTrackerMonoBehaviour
             dragImage.color = new Color(1, 1, 1, 0.5f);
             dragImage.enabled = true;
         }
+        else if (dragSlot != null && hovered == null)
+        {
+            equippedItemImage.sprite = dragSlot.GetItem().icon;
+            equippedItemImage.enabled = true;
+            player.GetComponentInChildren<PlayerController>().heldItem = dragSlot.GetItem();
+            dragSlot = null;
+            isDragging = false;
+            dragImage.enabled = false;
+            player.GetComponentInChildren<PlayerController>().inventoryActive = false;           
+        }
 
     }
 
@@ -109,15 +118,16 @@ public class Inventory : BeamEyeTrackerMonoBehaviour
         InvenSlot hovered = GetHoveredSlot();
         if (hovered != null)
         {
-            HandleDrop(dragSlot, hovered);
+            if (dragSlot != null)
+            {
+                HandleDrop(dragSlot, hovered);
 
-            dragImage.enabled = false;
+                dragImage.enabled = false;
 
-            dragSlot = null;
-            isDragging = false;
-
+                dragSlot = null;
+                isDragging = false;
+            }
         }
-
     }
 
     private InvenSlot GetHoveredSlot()

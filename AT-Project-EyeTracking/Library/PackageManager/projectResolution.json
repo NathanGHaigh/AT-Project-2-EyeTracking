@@ -10,6 +10,16 @@
     "H:\\Eyetracker\\beam_eye_tracker_sdk-2.1.0\\unity\\beam-eye-tracker-plugin\\package.json"
   ],
   "outputs": {
+    "com.unity.2d.sprite@1.0.0": {
+      "name": "com.unity.2d.sprite",
+      "displayName": "2D Sprite",
+      "resolvedPath": "F:\\UWE Everything Folder\\Year 3\\AT\\P2\\GIT\\AT-Project-2-EyeTracking\\AT-Project-EyeTracking\\Library\\PackageCache\\com.unity.2d.sprite@5eb30061d420",
+      "fingerprint": "5eb30061d42006925d91d40a6a8fca10bd64bbee",
+      "editorCompatibility": "2019.2.0a1",
+      "version": "1.0.0",
+      "source": "builtin",
+      "testable": false
+    },
     "com.unity.ai.navigation@2.0.8": {
       "name": "com.unity.ai.navigation",
       "displayName": "AI Navigation",

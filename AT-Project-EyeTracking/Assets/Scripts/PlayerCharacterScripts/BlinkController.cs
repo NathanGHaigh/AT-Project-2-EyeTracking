@@ -97,6 +97,7 @@ public class BlinkController : MonoBehaviour
         blinkImage.SetActive(false); // Hide the blink image
         blinkDurationRemaining = blinkDuration; // Reset the blink duration for the next blink
         blinkInterval = 0f; // Reset the blink interval for the next blink
+        blinkDuration = 0.1f;
     }
     private void SliderSetup()
     {
