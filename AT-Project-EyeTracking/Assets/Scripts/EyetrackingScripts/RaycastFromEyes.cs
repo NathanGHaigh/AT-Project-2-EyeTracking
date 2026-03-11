@@ -60,14 +60,21 @@ public class RaycastFromEyes : BeamEyeTrackerMonoBehaviour
         {
             if (Physics.SphereCast(ray, 2f, out RaycastHit hitInfo, maxRayDistance, hitMask))
             {
-                Debug.Log("Hit object: " + hitInfo.collider.tag);
-                currentViewedObject = hitInfo.collider.gameObject;
+                if (Physics.Raycast(ray, out RaycastHit closeObject, 3f, hitMask))
+                {
+                    currentViewedObject = closeObject.collider.gameObject;
+                }
+                else
+                {
+                    Debug.Log("Hit object: " + hitInfo.collider.tag);
+                    currentViewedObject = hitInfo.collider.gameObject;
+                }
             }
             else
             {
                 currentViewedObject = null;
             }
-        }
+        }W
 
     }
 
@@ -78,9 +85,10 @@ public class RaycastFromEyes : BeamEyeTrackerMonoBehaviour
         Gizmos.color = Color.red;
         Ray ray = mainCamera.ViewportPointToRay(viewportPos);
         Gizmos.DrawLine(ray.origin, ray.GetPoint(maxRayDistance));
+        Debug.DrawRay(ray.origin, ray.direction, Color.blue, 1f);
         for (float i = 0; i < maxRayDistance; i += 0.5f)
         {
-            //Gizmos.DrawWireSphere(ray.GetPoint(i), 2f);
+            Gizmos.DrawWireSphere(ray.GetPoint(i), 2f);
         }
 
 
