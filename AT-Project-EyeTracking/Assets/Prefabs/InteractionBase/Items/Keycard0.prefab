@@ -82,7 +82,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 9264d004b43ae6c418b060f74308b782, type: 3}
       propertyPath: m_Name
-      value: KeyCard
+      value: KeyCard-0
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 9264d004b43ae6c418b060f74308b782, type: 3}
       propertyPath: m_Layer
@@ -98,6 +98,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9264d004b43ae6c418b060f74308b782, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5984222874069309290}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9264d004b43ae6c418b060f74308b782, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3672026999209077568}
   m_SourcePrefab: {fileID: 100100000, guid: 9264d004b43ae6c418b060f74308b782, type: 3}
 --- !u!4 &4797083987902301902 stripped
 Transform:
@@ -143,6 +146,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Item: {fileID: 11400000, guid: 09c1151ab2d404144a92e59d312d4c50, type: 2}
-  prefab: {fileID: 0}
   inventory: {fileID: 0}
-  model: {fileID: 0}
+  parent: {fileID: 6454864845354427862}
+--- !u!114 &3672026999209077568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5321419485835549812}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec7c48ceff61ec34ba0b3c796eb34a63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  item: {fileID: 11400000, guid: 09c1151ab2d404144a92e59d312d4c50, type: 2}

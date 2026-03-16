@@ -14,10 +14,13 @@ public class InvenSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     private Color color;
 
+    public AudioManager audioManager;
+
     private void Awake()
     {
         iconImage = transform.GetChild(0).GetComponent<Image>();
         color = this.GetComponent<Image>().color;
+        audioManager = FindAnyObjectByType<AudioManager>();
         
     }
 
@@ -30,7 +33,18 @@ public class InvenSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         else
         {
             this.GetComponent<Image>().color = color;
+        }
+    }
 
+    public void SetHover(bool isHovering)
+    {
+        if (hovering == isHovering) return;
+
+        hovering = isHovering;
+
+        if(hovering)
+        {
+            audioManager?.HoveringItem();
         }
     }
 

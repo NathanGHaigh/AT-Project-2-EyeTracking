@@ -6,6 +6,7 @@ TagManager:
   tags:
   - SCP173
   - 096Face
+  - Door
   layers:
   - Default
   - TransparentFX
@@ -15,8 +16,8 @@ TagManager:
   - UI
   - Enemy
   - Interactable
-  - 
-  - 
+  - Environment
+  - Player
   - 
   - 
   - 

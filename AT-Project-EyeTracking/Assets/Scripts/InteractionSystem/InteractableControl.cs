@@ -28,6 +28,12 @@ namespace Interaction
         Canvas interactionCanvas;
 
         [SerializeField]
+        GameObject interactableIndicator;
+
+        [SerializeField]
+        GameObject pickupIndicator;
+
+        [SerializeField]
         float maxInteractionDistance = 3f;
         
         [SerializeField]
@@ -91,13 +97,25 @@ namespace Interaction
                 {
                     currentInteractable = interactable;
                     interactableReference = hitInfo.collider.gameObject;
-                    interactionCanvas.GetComponentInChildren<TextMeshProUGUI>().SetText(interactable.MessageInteract);
+                               
+                    if(interactable.Type == Type.Interact)
+                    {
+                        interactableIndicator.SetActive(true);
+                    }
+                    else if(interactable.Type == Type.Pickup)
+                    {
+                        pickupIndicator.SetActive(true);
+                    }
+
+                    //interactionCanvas.GetComponentInChildren<TextMeshProUGUI>().SetText(interactable.MessageInteract);
                     //Debug.Log($"Current interactable: {hitInfo.collider.name}");
                 }
                 else
                 {
                     currentInteractable = null;
                     interactableReference = null;
+                    pickupIndicator.SetActive(false);
+                    interactableIndicator.SetActive(false);
                 }
             }
             else
@@ -105,6 +123,8 @@ namespace Interaction
                 currentInteractable = null;
                 interactableReference = null;
                 interactionCanvas.GetComponentInChildren<TextMeshProUGUI>().SetText("");
+                pickupIndicator.SetActive(false);
+                interactableIndicator.SetActive(false);
             }
         }
 

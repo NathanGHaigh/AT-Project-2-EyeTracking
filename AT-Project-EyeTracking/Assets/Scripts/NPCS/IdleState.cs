@@ -25,7 +25,6 @@ public class IdleState : States
     public float range;
 
     public Animator animator;
-
     private void Start()
     {
         raycastFromEyes = player.GetComponentInChildren<RaycastFromEyes>();
@@ -37,7 +36,9 @@ public class IdleState : States
         Patrol();
         if (TriggerBooleanChecks())
         {
+
             animator.SetTrigger("TriggeredPanic");
+            
             return triggeredState;
         }
         else

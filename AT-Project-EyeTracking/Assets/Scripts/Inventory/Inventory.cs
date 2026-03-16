@@ -16,9 +16,13 @@ public class Inventory : BeamEyeTrackerMonoBehaviour
 
     public Camera playerCamera;
 
+    public Camera forwardCamera;
+
     public Image dragImage;
 
     public Image equippedItemImage;
+
+    public AudioManager audioManager;
 
     [SerializeField]
     BeamEyeTrackerInputDevice eyeTrackerInputDevice;
@@ -28,7 +32,7 @@ public class Inventory : BeamEyeTrackerMonoBehaviour
     private InvenSlot dragSlot = null;
     private bool isDragging = false;
 
-    private List<InvenSlot> inventorySlots = new List<InvenSlot>();
+    public List<InvenSlot> inventorySlots = new List<InvenSlot>();
 
     [SerializeField]
     Vector2 gazeScreenOffset = new Vector2(0f, -20f);
@@ -42,8 +46,8 @@ public class Inventory : BeamEyeTrackerMonoBehaviour
 
     private void OnEnable()
     {
-        playerInput.actions["InventorySelect"].started += StartDrag;
-        playerInput.actions["InventoryPlace"].canceled += EndDrag;
+        playerInput.actions["InventorySelect"].started += HandleCurrentProcess;
+        playerInput.actions["InventoryUse"].started += UseItemSelected;
     }
 
     private void OnDisable()
@@ -53,6 +57,8 @@ public class Inventory : BeamEyeTrackerMonoBehaviour
 
     private void Awake()
     {
+        if(audioManager == null)
+            audioManager = FindAnyObjectByType<AudioManager>();
         if (inventorySlotParent != null)
             inventorySlots.AddRange(inventorySlotParent.GetComponentsInChildren<InvenSlot>());
 
@@ -87,7 +93,19 @@ public class Inventory : BeamEyeTrackerMonoBehaviour
 
     }
 
-    private void StartDrag(InputAction.CallbackContext context)
+    void HandleCurrentProcess(InputAction.CallbackContext context)
+    {
+        if (dragSlot == null)
+        {
+            StartDrag();
+        }
+        else
+        {
+            EndDrag();
+        }
+    }
+
+    private void StartDrag()
     {
         Debug.Log("Started Drag Functiom");
         InvenSlot hovered = GetHoveredSlot();
@@ -100,20 +118,9 @@ public class Inventory : BeamEyeTrackerMonoBehaviour
             dragImage.color = new Color(1, 1, 1, 0.5f);
             dragImage.enabled = true;
         }
-        else if (dragSlot != null && hovered == null)
-        {
-            equippedItemImage.sprite = dragSlot.GetItem().icon;
-            equippedItemImage.enabled = true;
-            player.GetComponentInChildren<PlayerController>().heldItem = dragSlot.GetItem();
-            dragSlot = null;
-            isDragging = false;
-            dragImage.enabled = false;
-            player.GetComponentInChildren<PlayerController>().inventoryActive = false;           
-        }
-
     }
 
-    private void EndDrag(InputAction.CallbackContext context)
+    private void EndDrag()
     {
         InvenSlot hovered = GetHoveredSlot();
         if (hovered != null)
@@ -128,6 +135,53 @@ public class Inventory : BeamEyeTrackerMonoBehaviour
                 isDragging = false;
             }
         }
+        else if(hovered == null)
+        {
+            HandleDropItem();
+        }
+    }
+    private void UseItemSelected(InputAction.CallbackContext context)
+    {
+        if(dragSlot != null)
+        {
+            if(dragSlot.GetItem() is ItemKeyCard)
+            {
+                equippedItemImage.sprite = dragSlot.GetItem().icon;
+                equippedItemImage.enabled = true;
+                player.GetComponentInChildren<PlayerController>().heldItem = dragSlot.GetItem();
+                dragSlot = null;
+                isDragging = false;
+                dragImage.enabled = false;
+                player.GetComponentInChildren<PlayerController>().inventoryActive = false;    
+            }
+            else
+            {
+                Debug.Log("No Other CUrrent Item Functionality");
+            }
+        }
+    }
+
+
+    private void HandleDropItem()
+    {
+        Debug.Log("Dropping Item");
+
+        Item item = dragSlot.GetItem();
+        GameObject prefab = item.prefab;
+        Debug.Log(prefab.name);
+
+        GameObject dropped = Instantiate(prefab, forwardCamera.transform.position + forwardCamera.transform.forward, Quaternion.identity);
+
+
+        ItemDrop itemDrop = dropped.GetComponentInChildren<ItemDrop>();
+        itemDrop.item = item;
+        dragSlot.ClearSlot();
+        dragSlot = null;
+        isDragging= false;
+        dragImage.enabled = false;
+        
+
+
     }
 
     private InvenSlot GetHoveredSlot()
@@ -182,7 +236,7 @@ public class Inventory : BeamEyeTrackerMonoBehaviour
         Vector2 screenPoint = (playerCamera.ViewportToScreenPoint(currentGazePos));
         screenPoint += gazeScreenOffset;
     
-        Debug.Log($"Current gaze position: {screenPoint}");
+        //Debug.Log($"Current gaze position: {screenPoint}");
 
         UpdateGazeIndicator(screenPoint);
 
@@ -196,10 +250,7 @@ public class Inventory : BeamEyeTrackerMonoBehaviour
                 screenPoint
             );
 
-            if (slot.hovering != contains)
-            {
-                slot.hovering = contains;
-            }
+            slot.SetHover(contains);
 
         }
 

@@ -15,5 +15,5 @@ MonoBehaviour:
   id: 0
   objName: Keycard Level 0
   icon: {fileID: 21300000, guid: 6256b34581ad977428c498ee2054c105, type: 3}
-  prefab: {fileID: 919132149155446097, guid: 9264d004b43ae6c418b060f74308b782, type: 3}
+  prefab: {fileID: 6454864845354427862, guid: 5320741475a27654590439e17021ef57, type: 3}
   AccessLevel: 0

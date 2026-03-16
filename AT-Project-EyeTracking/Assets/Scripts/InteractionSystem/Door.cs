@@ -21,10 +21,12 @@ public class Door : MonoBehaviour
     [SerializeField]
     bool needsKeycard;
     [SerializeField]
-    int levelAccess;
+    public int levelAccess;
+
     [SerializeField]
-    TextMeshProUGUI textMeshProUGUI;
-    public float textTimer;
+    AudioSource source;
+    [SerializeField] public AudioClip dooropen;
+    [SerializeField] public AudioClip doorclose;
 
     [SerializeField]    
     State state;
@@ -35,19 +37,6 @@ public class Door : MonoBehaviour
 
     public void Update()
     {
-        if (needsKeycard)
-        {
-            if (textTimer > 0)
-            {
-                textTimer -= Time.deltaTime;
-            }
-            if (textTimer <= 0)
-            {
-                textMeshProUGUI.SetText("");
-                textTimer = 0;
-
-            }
-        }
     }
 
     public void Interacted(ItemKeyCard item)
@@ -57,17 +46,19 @@ public class Door : MonoBehaviour
             case State.Normal:
                 if (needsKeycard)
                 {
-                    textMeshProUGUI.SetText("Needs a KeyCard");
-                    textTimer = 5;
                     if(item != null)
-                        if (item.AccessLevel == levelAccess)
+                        if (item.AccessLevel >= levelAccess)
                         {
                             if (isOpen)
                             {
+                                source.clip = doorclose;
+                                source.Play();
                                 CloseDoor();
                             }
                             else if (!isOpen)
                             {
+                                source.clip = dooropen;
+                                source.Play();
                                 OpenDoor();
                             }
                         }
@@ -76,10 +67,14 @@ public class Door : MonoBehaviour
                 {
                     if (isOpen)
                     {
+                        source.clip = doorclose;
+                        source.Play();
                         CloseDoor();
                     }
                     else if (!isOpen)
                     {
+                        source.clip = dooropen;
+                        source.Play();
                         OpenDoor();
                     }
                 }

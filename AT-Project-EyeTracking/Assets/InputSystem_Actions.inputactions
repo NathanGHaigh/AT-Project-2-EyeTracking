@@ -96,7 +96,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "InventoryPlace",
+                    "name": "InventoryUse",
                     "type": "Button",
                     "id": "ab96526e-5478-4c8e-b74d-0e08af25cd2c",
                     "expectedControlType": "",
@@ -485,7 +485,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
-                    "action": "InventoryPlace",
+                    "action": "InventoryUse",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

@@ -7,12 +7,20 @@ public class TriggeredState : States
     public bool activated;
     public Animator animator;
 
-    public float countDown = 20f;
+    public float countDown = 60f;
+
+    public AudioManager audioManager;
+
+    public void Awake()
+    {
+        audioManager = FindAnyObjectByType<AudioManager>();
+    }
     public override States RunCurrentState()
     {
         CountDown();
         if (activated)
         {
+            audioManager.Play096Chase();
             return chaseState;
         }
         return this;
