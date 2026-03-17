@@ -33,6 +33,8 @@ namespace Interaction
         public void Awake()
         {
             origin = button.transform.position;
+
+            player = GameObject.Find("Player 1");
         }
         public void Interact(InteractableControl interactableControl)
         {

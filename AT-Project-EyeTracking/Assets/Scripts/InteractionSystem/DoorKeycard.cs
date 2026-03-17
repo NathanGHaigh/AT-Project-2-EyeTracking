@@ -36,6 +36,12 @@ namespace Interaction
 
         public float interactionTime;
 
+        public void Awake()
+        {
+            player = GameObject.Find("Player 1");
+
+            interactionText = GameObject.Find("IndicatorText").GetComponent<TextMeshProUGUI>();
+        }
         public void Interact(InteractableControl interactableControl)
         {
 
@@ -51,7 +57,7 @@ namespace Interaction
                         interactionText.SetText("Access Granted");
                         interactionTime = 5;
                         linkedDoor.GetComponent<Door>().Interacted(item);
-                        coolDownTimer = timeToSet;
+                        coolDownTimer = 2;
                     }
                     else
                     {

@@ -20,7 +20,22 @@ public class ChaseState : States
 
     public void RunAtPlayer()
     {
-        agent.SetDestination(Player.transform.position);
+        NavMeshPath path = new NavMeshPath();
+        agent.CalculatePath(Player.transform.position, path);
+
+        if (path.status == NavMeshPathStatus.PathComplete)
+        {
+            agent.SetDestination(Player.transform.position);
+        }
+        else if (path.status == NavMeshPathStatus.PathPartial)
+        {
+            // Move to the furthest reachable point toward the player
+            Vector3 bestPoint = path.corners[path.corners.Length - 1];
+            agent.SetDestination(bestPoint);
+        }
+
+        Debug.Log($"Path Status: {agent.pathStatus} | Has Path: {agent.hasPath} | Pending: {agent.pathPending}");
+
         Vector3 rayOrigin = self.transform.position;
         Vector3 rayDirection = self.transform.forward;
   
@@ -32,7 +47,10 @@ public class ChaseState : States
             {
 
                 Debug.Log("Open Door");
-                hit.collider.gameObject.GetComponentInChildren<Door>().OpenDoor();
+                if (hit.collider.gameObject.GetComponentInChildren<Door>() != null)
+                {
+                    hit.collider.gameObject.GetComponentInChildren<Door>().OpenDoor();
+                }
                 Debug.DrawRay(rayOrigin, rayDirection, Color.green, 1.5f);
             }
             else
@@ -42,7 +60,6 @@ public class ChaseState : States
                 Debug.Log("No Door to open");
                 Debug.DrawRay(rayOrigin, rayDirection, Color.red, 1.5f);
             }
-
         }
     }
 
