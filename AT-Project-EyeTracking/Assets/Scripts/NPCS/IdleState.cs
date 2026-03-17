@@ -58,11 +58,14 @@ public class IdleState : States
 
         playerInFront = dot > 0;
 
-        if (raycastFromEyes.currentViewedObject != null)
+        if (raycastFromEyes.hasSeenFace == true)
         {
-            var viewed = raycastFromEyes.currentViewedObject;
 
-            lookingAtFace = (viewed.tag == "096Face");
+            lookingAtFace = true;
+        }
+        else
+        {
+            lookingAtFace = false;
         }
 
         if (isVisible && lookingAtFace && playerInFront)

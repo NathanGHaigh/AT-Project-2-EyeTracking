@@ -14,7 +14,11 @@ public class RaycastFromEyes : BeamEyeTrackerMonoBehaviour
 
     [SerializeField] float maxRayDistance = 100f;
 
-    [SerializeField] LayerMask hitMask = ~0;
+    public bool hasSeenFace = false;
+
+    [SerializeField] LayerMask LayerMask173;
+
+    [SerializeField] LayerMask LayerMask096Face;
 
     public GameObject currentViewedObject;
 
@@ -58,22 +62,43 @@ public class RaycastFromEyes : BeamEyeTrackerMonoBehaviour
 
         if (!blinkController.isBlinking)
         {
-            if (Physics.SphereCast(ray, 1.5f, out RaycastHit hitInfo, maxRayDistance, hitMask))
+            // --- CHANGE: was hitMask, now watchEnemyMask ---
+            if (Physics.SphereCast(ray, 1.5f, out RaycastHit hitInfo, maxRayDistance, LayerMask173))
             {
-                if (Physics.Raycast(ray, out RaycastHit closeObject, 3f, hitMask))
+                Debug.Log("SphereCast Hit:" + hitInfo.collider.name + "Layer" + LayerMask.LayerToName(hitInfo.collider.gameObject.layer) + " | Tag: " + hitInfo.collider.tag);
+                if (Physics.Raycast(ray, out RaycastHit closeObject, 3f, LayerMask173))
                 {
                     currentViewedObject = closeObject.collider.gameObject;
+                    Debug.Log("Close raycast hit: " + closeObject.collider.name);
+                    
                 }
                 else
                 {
-                    Debug.Log("Hit object: " + hitInfo.collider.tag);
                     currentViewedObject = hitInfo.collider.gameObject;
+                    Debug.Log("Hit object: " + hitInfo.collider.tag);
+
                 }
             }
             else
             {
+                Debug.Log("SphereCast hit NOTHING");
                 currentViewedObject = null;
             }
+
+            // --- ADD: separate raycast for face-trigger enemy ---
+            if (Physics.Raycast(ray, out RaycastHit faceHit, maxRayDistance, LayerMask096Face))
+            {
+                if (faceHit.collider.CompareTag("096Face"))
+                {
+                    hasSeenFace = true;
+                    Debug.Log("SeenFace");                 
+                }
+                else
+                {
+                    hasSeenFace = false;
+                }
+            }
+           
         }
 
     }
