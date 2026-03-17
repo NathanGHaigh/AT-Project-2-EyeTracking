@@ -30,10 +30,16 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] public Image equippedItem;
 
+    [SerializeField] public AudioManager audioManager;
+
 
     public bool inventoryActive = false;
 
     public GameObject InventoryUI;
+
+    public bool documentUIActive = false;
+
+    public GameObject DocumentUI;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -44,6 +50,11 @@ public class PlayerController : MonoBehaviour
         if (playerInput == null)
         {
             playerInput = GetComponent<PlayerInput>();
+        }
+
+        if(audioManager == null)
+        {
+            audioManager = FindAnyObjectByType<AudioManager>();
         }
     }
 
@@ -73,6 +84,16 @@ public class PlayerController : MonoBehaviour
         {
             InventoryUI.SetActive(true);
         }
+
+        if(!documentUIActive)
+        {
+            DocumentUI.SetActive(false);
+        }
+        else
+        {
+            DocumentUI.SetActive(true);
+        }
+
         Move(MoveInput);
         CheckGrounded();
         ApplyGravity();
@@ -118,6 +139,11 @@ public class PlayerController : MonoBehaviour
         manager.GetComponent<InteractableControl>().OnInteract();
         if(heldItem != null) 
             ResetHeldItem();
+        if(documentUIActive)
+        {
+            documentUIActive = false;
+            audioManager.PaperSelect();
+        }
     }
 
     private void ToggleInventory(InputAction.CallbackContext context)

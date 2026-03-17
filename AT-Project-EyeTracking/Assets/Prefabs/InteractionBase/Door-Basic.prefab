@@ -384,6 +384,7 @@ MonoBehaviour:
   panel: {fileID: -8256134651489076907}
   button: {fileID: 6821887585681450876}
   coolDownTimer: 0
+  timeToSet: 2
   animator: {fileID: 4259368349903615409}
   linkedDoor: {fileID: 5045765538369610930}
   source: {fileID: 2865948405433416196}
@@ -741,7 +742,7 @@ Transform:
   m_GameObject: {fileID: 5045765538369610930}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 317.34094, y: 0.0033445358, z: 238.194}
+  m_LocalPosition: {x: -11.570888, y: 0.0000019073486, z: -10.310101}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -791,11 +792,9 @@ MonoBehaviour:
   doorAnim: {fileID: 2293051820680106278}
   needsKeycard: 0
   levelAccess: 0
-  textMeshProUGUI: {fileID: 0}
-  textTimer: 0
-  source: {fileID: 0}
-  dooropen: {fileID: 0}
-  doorclose: {fileID: 0}
+  source: {fileID: 5229542982508473913}
+  dooropen: {fileID: 8300000, guid: ad9f617676701dd469d330144ee5b5e3, type: 3}
+  doorclose: {fileID: 8300000, guid: f9f4fe8f152e21344a34a70d8bcea2d7, type: 3}
   state: 0
 --- !u!65 &7266222945806351331
 BoxCollider:
@@ -840,7 +839,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 2
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -875,7 +874,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -1495,6 +1494,7 @@ MonoBehaviour:
   panel: {fileID: 6405901601909799206}
   button: {fileID: 6209888291184793469}
   coolDownTimer: 0
+  timeToSet: 2
   animator: {fileID: 2251980839736419304}
   linkedDoor: {fileID: 5045765538369610930}
   source: {fileID: 3726443336634511810}

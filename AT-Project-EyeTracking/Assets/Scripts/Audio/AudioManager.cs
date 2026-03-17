@@ -14,9 +14,13 @@ public class AudioManager : MonoBehaviour
 
     public AudioClip pickUpAudio;
 
+    public AudioClip dropItem;
+
     public AudioClip ambientTrack;
 
     public AudioClip chase096;
+
+    public AudioClip paperSelect;
 
     public void HoveringItem()
     {
@@ -25,8 +29,17 @@ public class AudioManager : MonoBehaviour
     }
     public void SelectedItem()
     {
-        uiSource.clip = selectedItem;
-        uiSource.Play();
+        uiSource.PlayOneShot(selectedItem);
+    }
+
+    public void PaperSelect()
+    {
+        uiSource.PlayOneShot(paperSelect);
+    }
+
+    public void DropItem()
+    {
+        uiSource.PlayOneShot(dropItem);
     }
     public void PlayAmbientTrack()
     {

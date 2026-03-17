@@ -14,6 +14,8 @@ public class Inventory : BeamEyeTrackerMonoBehaviour
 
     public PlayerInput playerInput;
 
+    public Image documentImage;
+
     public Camera playerCamera;
 
     public Camera forwardCamera;
@@ -146,6 +148,7 @@ public class Inventory : BeamEyeTrackerMonoBehaviour
         {
             if(dragSlot.GetItem() is ItemKeyCard)
             {
+                audioManager.SelectedItem();
                 equippedItemImage.sprite = dragSlot.GetItem().icon;
                 equippedItemImage.enabled = true;
                 player.GetComponentInChildren<PlayerController>().heldItem = dragSlot.GetItem();
@@ -153,6 +156,19 @@ public class Inventory : BeamEyeTrackerMonoBehaviour
                 isDragging = false;
                 dragImage.enabled = false;
                 player.GetComponentInChildren<PlayerController>().inventoryActive = false;    
+            }
+            else if(dragSlot.GetItem() is ItemDocument)
+            {
+                var documentItem = dragSlot.GetItem() as ItemDocument;
+                player.GetComponentInChildren<PlayerController>().documentUIActive = true;
+                documentImage.sprite = documentItem.documentSprite;
+                dragSlot = null;
+                isDragging = false;
+                dragImage.enabled = false;
+                player.GetComponent<PlayerController>().inventoryActive = false;
+                audioManager.PaperSelect();
+                
+
             }
             else
             {
@@ -172,7 +188,7 @@ public class Inventory : BeamEyeTrackerMonoBehaviour
 
         GameObject dropped = Instantiate(prefab, forwardCamera.transform.position + forwardCamera.transform.forward, Quaternion.identity);
 
-
+        audioManager.DropItem();
         ItemDrop itemDrop = dropped.GetComponentInChildren<ItemDrop>();
         itemDrop.item = item;
         dragSlot.ClearSlot();
