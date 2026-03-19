@@ -2151,7 +2151,7 @@ MonoBehaviour:
   chaseState: {fileID: 787114205}
   activated: 0
   animator: {fileID: 445327129}
-  countDown: 1
+  countDown: 32
   audioManager: {fileID: 0}
 --- !u!4 &432824191
 Transform:

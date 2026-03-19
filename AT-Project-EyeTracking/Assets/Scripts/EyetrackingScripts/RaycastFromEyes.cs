@@ -24,6 +24,8 @@ public class RaycastFromEyes : BeamEyeTrackerMonoBehaviour
 
     Vector3 viewportPos;
 
+    public float SpherCastScale;
+
     void Awake()
     {
         if (mainCamera == null)
@@ -63,7 +65,7 @@ public class RaycastFromEyes : BeamEyeTrackerMonoBehaviour
         if (!blinkController.isBlinking)
         {
             // --- CHANGE: was hitMask, now watchEnemyMask ---
-            if (Physics.SphereCast(ray, 1.5f, out RaycastHit hitInfo, maxRayDistance, LayerMask173))
+            if (Physics.SphereCast(ray, SpherCastScale, out RaycastHit hitInfo, maxRayDistance, LayerMask173))
             {
                 Debug.Log("SphereCast Hit:" + hitInfo.collider.name + "Layer" + LayerMask.LayerToName(hitInfo.collider.gameObject.layer) + " | Tag: " + hitInfo.collider.tag);
                 if (Physics.Raycast(ray, out RaycastHit closeObject, 3f, LayerMask173))
@@ -76,7 +78,6 @@ public class RaycastFromEyes : BeamEyeTrackerMonoBehaviour
                 {
                     currentViewedObject = hitInfo.collider.gameObject;
                     Debug.Log("Hit object: " + hitInfo.collider.tag);
-
                 }
             }
             else
@@ -86,7 +87,7 @@ public class RaycastFromEyes : BeamEyeTrackerMonoBehaviour
             }
 
             // --- ADD: separate raycast for face-trigger enemy ---
-            if (Physics.Raycast(ray, out RaycastHit faceHit, maxRayDistance, LayerMask096Face))
+            if (Physics.SphereCast(ray, 1.5f, out RaycastHit faceHit, maxRayDistance, LayerMask096Face))
             {
                 if (faceHit.collider.CompareTag("096Face"))
                 {
@@ -113,7 +114,7 @@ public class RaycastFromEyes : BeamEyeTrackerMonoBehaviour
         Debug.DrawRay(ray.origin, ray.direction, Color.blue, 1f);
         for (float i = 0; i < maxRayDistance; i += 0.5f)
         {
-            Gizmos.DrawWireSphere(ray.GetPoint(i), 1.5f);
+            Gizmos.DrawWireSphere(ray.GetPoint(i), SpherCastScale);
         }
 
 
