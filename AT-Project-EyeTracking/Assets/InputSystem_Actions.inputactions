@@ -60,9 +60,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Sprint",
+                    "name": "SprintStart",
                     "type": "Button",
                     "id": "641cd816-40e6-41b4-8c3d-04687c349290",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SprintEnd",
+                    "type": "Button",
+                    "id": "db75187f-1196-444a-a804-66dfddf259d0",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -350,10 +359,10 @@
                     "name": "",
                     "id": "f2e9ba44-c423-42a7-ad56-f20975884794",
                     "path": "<Keyboard>/leftShift",
-                    "interactions": "",
+                    "interactions": "Press",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Sprint",
+                    "action": "SprintStart",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -364,18 +373,29 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Sprint",
+                    "action": "SprintStart",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "d8bf24bf-3f2f-4160-a97c-38ec1eb520ba",
-                    "path": "<XRController>/trigger",
+                    "id": "8ebcfc73-233a-4ae9-92f1-1a152a353551",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "SprintEnd",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6b738aa4-342f-467f-a81c-e7fc601421aa",
+                    "path": "<Gamepad>/leftStickPress",
                     "interactions": "",
                     "processors": "",
-                    "groups": "XR",
-                    "action": "Sprint",
+                    "groups": "Gamepad",
+                    "action": "SprintEnd",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

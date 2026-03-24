@@ -8,6 +8,12 @@ public class AudioManager : MonoBehaviour
 
     public AudioSource altSource;
 
+    public AudioSource playerFootsteps;
+
+    public AudioClip walkingSteps;
+
+    public AudioClip sprintingSteps;
+
     public AudioClip slotHover;
 
     public AudioClip selectedItem;

@@ -14,11 +14,19 @@ public class RaycastFromEyes : BeamEyeTrackerMonoBehaviour
 
     [SerializeField] float maxRayDistance = 100f;
 
+    [SerializeField] float rayDist096 = 10f;
+
     public bool hasSeenFace = false;
+
+    public bool watching689 = false;
 
     [SerializeField] LayerMask LayerMask173;
 
+    [SerializeField] LayerMask wallMask;
+
     [SerializeField] LayerMask LayerMask096Face;
+
+    [SerializeField] LayerMask LayerMask689;
 
     public GameObject currentViewedObject;
 
@@ -56,18 +64,12 @@ public class RaycastFromEyes : BeamEyeTrackerMonoBehaviour
 
         Ray ray = mainCamera.ViewportPointToRay(viewportPos);
 
-        //if (Physics.Raycast(ray, out RaycastHit hitInfo, maxRayDistance, hitMask))
-        //{
-        //    Debug.Log("Hit object: " + hitInfo.collider.tag);
-        //    currentViewedObject = hitInfo.collider.gameObject.transform.parent.gameObject;
-        //}
-
         if (!blinkController.isBlinking)
         {
-            // --- CHANGE: was hitMask, now watchEnemyMask ---
+            // Raycast for Viewing SCP 173
             if (Physics.SphereCast(ray, SpherCastScale, out RaycastHit hitInfo, maxRayDistance, LayerMask173))
             {
-                Debug.Log("SphereCast Hit:" + hitInfo.collider.name + "Layer" + LayerMask.LayerToName(hitInfo.collider.gameObject.layer) + " | Tag: " + hitInfo.collider.tag);
+                //Debug.Log("SphereCast Hit:" + hitInfo.collider.name + "Layer" + LayerMask.LayerToName(hitInfo.collider.gameObject.layer) + " | Tag: " + hitInfo.collider.tag);
                 if (Physics.Raycast(ray, out RaycastHit closeObject, 3f, LayerMask173))
                 {
                     currentViewedObject = closeObject.collider.gameObject;
@@ -82,22 +84,52 @@ public class RaycastFromEyes : BeamEyeTrackerMonoBehaviour
             }
             else
             {
-                Debug.Log("SphereCast hit NOTHING");
+                //Debug.Log("SphereCast hit NOTHING");
                 currentViewedObject = null;
             }
 
-            // --- ADD: separate raycast for face-trigger enemy ---
-            if (Physics.SphereCast(ray, 1.5f, out RaycastHit faceHit, maxRayDistance, LayerMask096Face))
+            // Raycasr for Viewing SCP 096s face
+            if (Physics.SphereCast(ray, 1.5f, out RaycastHit faceHit, rayDist096, LayerMask096Face))
             {
                 if (faceHit.collider.CompareTag("096Face"))
                 {
-                    hasSeenFace = true;
-                    Debug.Log("SeenFace");                 
+                    bool wallInWay = Physics.Raycast(
+                        ray.origin, ray.direction,
+                        faceHit.distance, wallMask);
+
+                    if (!wallInWay)
+                    {
+                        hasSeenFace = true;
+                        Debug.Log("SeenFace");
+                    }
+                    else
+                    {
+                        hasSeenFace = false;
+                        Debug.Log("Wall In the way");
+                    }
                 }
                 else
                 {
                     hasSeenFace = false;
                 }
+            }
+
+            //Raycast to detect that player staring at SCP 689
+            if(Physics.SphereCast(ray, 1.5f, out RaycastHit watch689, maxRayDistance, LayerMask689))
+            {
+
+                if(watch689.collider.CompareTag("689"))
+                {
+                    watching689 = true;
+                }
+                else
+                {
+                    watching689 = false;
+                }
+            }
+            else 
+            {
+                watching689 = false;
             }
            
         }

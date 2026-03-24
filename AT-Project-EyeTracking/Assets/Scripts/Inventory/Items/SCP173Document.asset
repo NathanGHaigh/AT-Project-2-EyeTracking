@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 173
   objName: SCP-173 Document
-  icon: {fileID: 21300000, guid: a3a1a6565e1a4ef4883cd823c44db2f1, type: 3}
+  icon: {fileID: 21300000, guid: ec1003f52ea988d4b9f5db269d681797, type: 3}
   prefab: {fileID: 4397276125893303050, guid: 7b25619816c2f3543899f6e6bd6397d8, type: 3}
   documentSprite: {fileID: 21300000, guid: a3a1a6565e1a4ef4883cd823c44db2f1, type: 3}

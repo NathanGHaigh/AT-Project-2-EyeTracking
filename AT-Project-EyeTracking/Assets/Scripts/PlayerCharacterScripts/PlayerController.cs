@@ -22,6 +22,16 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] public bool IsMoving;
 
+    [SerializeField] private bool IsSprinting;
+
+    [SerializeField] private float stamina;
+
+    [SerializeField] private float maxStamina;
+
+    [SerializeField] private float minStamina;
+
+    [SerializeField] private Slider staminaSlider;
+
     [SerializeField] private PlayerInput playerInput;
 
     [SerializeField] public GameObject manager;
@@ -56,12 +66,20 @@ public class PlayerController : MonoBehaviour
         {
             audioManager = FindAnyObjectByType<AudioManager>();
         }
+
+        stamina = 10;
+
+        staminaSlider = GameObject.Find("StaminaBar").GetComponent<Slider>();
+        staminaSlider.maxValue = maxStamina;
+        staminaSlider.minValue = minStamina;
     }
 
     private void OnEnable()
     {
         playerInput.actions["Move"].performed += OnMove;
         playerInput.actions["Move"].canceled += OnMove;
+        playerInput.actions["SprintStart"].performed += x => SprintStart();
+        playerInput.actions["SprintEnd"].performed += x => SprintEnd();
         playerInput.actions["Interact"].performed += OnInteract;
         playerInput.actions["Interact"].canceled += OnInteract;
         playerInput.actions["ToggleInventory"].performed += ToggleInventory;
@@ -97,6 +115,7 @@ public class PlayerController : MonoBehaviour
         Move(MoveInput);
         CheckGrounded();
         ApplyGravity();
+        Sprint();
     }
 
     private void FixedUpdate()
@@ -108,6 +127,41 @@ public class PlayerController : MonoBehaviour
     {
         IsMoving = context.ReadValue<Vector2>() != Vector2.zero;
         MoveInput = context.ReadValue<Vector2>();
+    }
+
+    private void SprintStart()
+    {
+
+            IsSprinting = true;
+    }
+
+    private void SprintEnd()
+    {
+        IsSprinting = false;
+    }
+    private void Sprint()
+    {
+        staminaSlider.value = stamina;
+        if (IsSprinting)
+        {
+            moveSpeed = 6;
+            stamina -= Time.deltaTime;
+        }
+        else
+        {
+            moveSpeed = 2;
+            if(stamina >= maxStamina)
+            {
+                stamina = maxStamina;
+            }
+            else
+                stamina += Time.deltaTime;
+        }
+
+        if (stamina <= 0)
+        {
+            IsSprinting = false;
+        }
     }
 
     private void Move(Vector3 moveDirection)
@@ -174,5 +228,7 @@ public class PlayerController : MonoBehaviour
     }
 
     private void OnInteract(InputValue value) { }
+
+    private void OnSprint(InputValue value) { }
     #endregion
 }

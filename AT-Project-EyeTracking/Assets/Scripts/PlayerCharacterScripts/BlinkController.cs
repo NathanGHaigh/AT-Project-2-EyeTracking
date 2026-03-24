@@ -23,7 +23,6 @@ public class BlinkController : MonoBehaviour
     private float blinkDurationRemaining;
 
     RaycastFromEyes raycastFromEyes;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private void OnEnable()
     {
@@ -61,11 +60,10 @@ public class BlinkController : MonoBehaviour
         {
             raycastFromEyes = GetComponentInParent<RaycastFromEyes>();
         }
-        blinkDurationRemaining = blinkDuration; // Initialize the blink duration remaining
+        blinkDurationRemaining = blinkDuration;
         SliderSetup();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!isBlinking)
@@ -75,18 +73,18 @@ public class BlinkController : MonoBehaviour
 
     }
 
-    private void StartBlink(bool held)
+    public void StartBlink(bool held)
     {
         isBlinking = true;
         isHoldingBlink = held;
-        blinkImage.SetActive(true); // Show the blink image
-        raycastFromEyes.currentViewedObject = null; // Clear the currently viewed object during the blink
+        blinkImage.SetActive(true); 
+        raycastFromEyes.currentViewedObject = null; 
 
-        blinkInterval = 0f; // Reset the blink interval when a blink starts
+        blinkInterval = 0f; 
 
         if(!held)
         {
-            blinkDurationRemaining = blinkDuration; // Set the blink duration for a normal blink
+            blinkDurationRemaining = blinkDuration; 
         }
     }
 
@@ -94,9 +92,9 @@ public class BlinkController : MonoBehaviour
     {
         isBlinking = false;
         isHoldingBlink = false;
-        blinkImage.SetActive(false); // Hide the blink image
-        blinkDurationRemaining = blinkDuration; // Reset the blink duration for the next blink
-        blinkInterval = 0f; // Reset the blink interval for the next blink
+        blinkImage.SetActive(false);
+        blinkDurationRemaining = blinkDuration; 
+        blinkInterval = 0f; 
         blinkDuration = 0.1f;
     }
     private void SliderSetup()
@@ -135,10 +133,9 @@ public class BlinkController : MonoBehaviour
         {
             if (blinkInterval >= maxBlinkInterval)
             {
-                // Trigger the blink
                 Debug.Log("Blink!");
                 StartBlink(held: false);
-                blinkInterval = 0f; // Reset the blink interval
+                blinkInterval = 0f;
             }
         }
     }
