@@ -19,6 +19,17 @@ public class EncounterManager : MonoBehaviour
 
     public float dotProductThreshold = 0.3f;
 
+    public float threatSpawnThreshold = 40f;
+    [SerializeField] private float threatGainMultiplier;
+
+    public GameObject SCP173GO;
+
+    public GameObject SCP096GO;
+
+    public bool inKeyRoom = false;
+
+    public bool is689Active = false;
+
     public float EncounterCooldown = 10f;
     [SerializeField]
     private bool encounterActive = false;
@@ -32,18 +43,74 @@ public class EncounterManager : MonoBehaviour
         blinkController = FindAnyObjectByType<BlinkController>();
 
         allSpawnPoints = FindObjectsByType<SCP689SpawnPoint>(FindObjectsSortMode.None).ToList();
+
+        threatGainMultiplier = 1f;
     }
 
     private void Update()
     {
         if (encounterActive) return;
 
-        EncounterCooldown -= Time.deltaTime;
+        SpawnController();
+    }
 
-        if(EncounterCooldown < 0)
+    public void SpawnController()
+    {
+        if(!is689Active) return;
+
+        threatGainMultiplier = DeterminThreatMultiplier();
+
+        threatSpawnThreshold -= Time.deltaTime * threatGainMultiplier;
+
+        if (threatSpawnThreshold < 0)
         {
             AttemptTrigger689Encounter();
         }
+    }
+
+    public float DeterminThreatMultiplier()
+    {
+        var multiplier = 0f;
+        float distanceTo173 = Vector3.Distance(Player.position, SCP173GO.transform.position);
+        float distanceTo096 = Vector3.Distance(Player.position, SCP096GO.transform.position);
+
+        bool case1 = distanceTo173 <= 10;
+        bool case2 = distanceTo096 <= 10;
+        bool case3 = inKeyRoom;
+
+        if (case1 && !case2 && !case3) //173 Close, 096 not close, not in Key room
+        {
+            multiplier = 0.25f;
+        }
+        else if (case1 && case2 && !case3) // 173 close, 096 close, not in Key room
+        {
+            multiplier = 0.25f;
+        }
+        else if(case1 && case2 && case3) // 173 close, 096 close, in Key Room
+        {
+            multiplier = 1.25f;
+        }
+        else if (case1 && !case2 && case3)// 173 close, 096 not close, in Key Room
+        {
+            multiplier = 1.5f;
+        }
+        else if (!case1 && case2 && !case3)// 173 not close, 096 close, not in Key room
+        {
+            multiplier = 0.5f;
+        }
+        else if(!case1 && case2 && case3)// 173 not close, 096 close, in Key room
+        {
+            multiplier = 1.75f;
+        }
+        else if(!case1 && !case2 && case3)// 173 not close, 096 not close, in Key room
+        {
+            multiplier = 2f;
+        }
+        else
+        {
+            multiplier = 1f;
+        }
+        return multiplier;
     }
 
     public void AttemptTrigger689Encounter()
