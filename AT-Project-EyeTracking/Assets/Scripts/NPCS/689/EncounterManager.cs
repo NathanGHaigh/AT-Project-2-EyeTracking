@@ -30,7 +30,6 @@ public class EncounterManager : MonoBehaviour
 
     public bool is689Active = false;
 
-    public float EncounterCooldown = 10f;
     [SerializeField]
     private bool encounterActive = false;
     [SerializeField]
@@ -120,7 +119,7 @@ public class EncounterManager : MonoBehaviour
         if (spawnPoint == null)
         {
             Debug.Log("Spawn Failed");
-            EncounterCooldown = 10f;
+            threatSpawnThreshold = Random.Range(2, 5);
             return;
         }
         Debug.Log("Spawn Passed " + spawnPoint.name);
@@ -190,7 +189,7 @@ public class EncounterManager : MonoBehaviour
         Destroy(gameObject);
         encounterActive = false;
         active689Instance = null;
-        EncounterCooldown = 10f;
+        threatSpawnThreshold = Random.Range(30, 60);
         Debug.Log("Triggered Destory Event");
     }
 }

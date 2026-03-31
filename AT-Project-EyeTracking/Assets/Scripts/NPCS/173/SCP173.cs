@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -13,8 +14,30 @@ public class SCP173 : MonoBehaviour
     [SerializeField] private Rigidbody rb;
 
     private RaycastFromEyes raycastFromEyes;
+    private AudioManager audioManager;
     private BlinkController blinkController;
     private float teleportTimer = 0f;
+    [SerializeField] private bool beingLookedAt = false;
+
+    [SerializeField] private bool directLOS = false;
+
+    [SerializeField] private bool hasSeenPlayer = false;
+
+    [SerializeField] public bool hasEverSeenPlayer = false;
+
+    [SerializeField] float range = 20;
+
+    [SerializeField] public float lastSawPlayer = 0;
+
+    [SerializeField] Vector3 lastPlayerPos = new();
+
+    [SerializeField] Vector3 offset = new();
+
+    [SerializeField] public bool audioTrigger = true;
+
+    [SerializeField] Vector3 randomRoamPoint;
+
+    [SerializeField] bool hasRoamPoint = false;
 
     void Start()
     {
@@ -22,6 +45,7 @@ public class SCP173 : MonoBehaviour
         {
             raycastFromEyes = player.GetComponentInChildren<RaycastFromEyes>();
             blinkController = player.GetComponentInChildren<BlinkController>();
+            audioManager = FindAnyObjectByType<AudioManager>();
         }
 
         if (agent != null)
@@ -43,38 +67,131 @@ public class SCP173 : MonoBehaviour
         if (player == null || agent == null)
             return;
 
-        // Check if being looked at
-        bool beingLookedAt = false;
-        if (raycastFromEyes != null && raycastFromEyes.currentViewedObject != null)
+        if(player.GetComponentInChildren<PlayerController>().isDead)
         {
-            var viewed = raycastFromEyes.currentViewedObject;
-            beingLookedAt = (viewed == gameObject) || viewed.transform.IsChildOf(transform);
-        }
-
-        if (beingLookedAt)
-        {
-            teleportTimer = 0f;
-            agent.isStopped = true;
+            hasSeenPlayer = false;
+            hasEverSeenPlayer = false;
+            lastSawPlayer = 0;
+            audioTrigger = false;
             return;
         }
 
-        agent.isStopped = false;
+        if (!hasSeenPlayer)
+        {
+            RandomPointRoam();           
+        }
+        if(hasRoamPoint)
+        {
+            var time = 20f;
+            
+            time -= Time.deltaTime;
+            if(time <= 0)
+            {
+                hasRoamPoint = false;
+                RandomPointRoam();
+            }
+        }
 
-        // Flat distance check to avoid jitter at close range
-        Vector3 flatPlayerPos = new Vector3(player.transform.position.x, transform.position.y, player.transform.position.z);
+
+        if (hasEverSeenPlayer)
+        {
+            if (hasSeenPlayer)
+            {
+                lastSawPlayer = 0;
+            }
+            else
+            {
+                lastSawPlayer += Time.deltaTime;
+                if(lastSawPlayer > 60)
+                {
+                    if(!audioTrigger)
+                        audioTrigger = true;
+                }
+            }
+        }
+
+        beingLookedAt = BeingLookedAt();
+        directLOS = HasDirectLos();
+
+        var DistancetoPlayer = Vector3.Distance(this.gameObject.transform.position, player.gameObject.transform.position);
+        //Debug.Log(DistancetoPlayer);
+
+
+        if (DistancetoPlayer < range && directLOS)
+        {
+            lastPlayerPos = player.transform.position;
+            hasSeenPlayer = true;
+            hasEverSeenPlayer = true;
+            // Check if being looked at
+
+            if (beingLookedAt)
+            {
+                teleportTimer = 0f;
+                agent.isStopped = true;
+                if(DistancetoPlayer < 10 && directLOS && audioTrigger)
+                {
+                    Debug.Log("Audio Played");
+                    audioManager.PlaySCP173Audio();
+                    audioTrigger = false;
+                }
+                return;
+            }
+
+            if(DistancetoPlayer <= 3.5f)
+            {
+                //Debug.Log("Killed Player");
+                KillPlayer();
+                return;
+            }
+
+            Move(lastPlayerPos);
+        }
+
+        else
+        {
+            if (hasSeenPlayer && !beingLookedAt)
+            {
+                Move(lastPlayerPos);
+            }
+        }
+    }
+
+    private bool HasDirectLos()
+    {
+        if (Physics.Raycast(transform.position + offset, (player.gameObject.transform.position + offset - transform.position), out RaycastHit hitInfo, range))
+        {
+            if(hitInfo.collider.CompareTag("Player"))
+            {
+                Debug.DrawRay(transform.position + offset, hitInfo.point - transform.position, Color.yellow);
+                return true;
+            }
+            Debug.DrawRay(transform.position + offset, hitInfo.point - transform.position, Color.red);
+        }
+        return false;
+    }
+
+    private bool BeingLookedAt()
+    {
+        return raycastFromEyes.lookingAt173;
+    }
+
+    void Move(Vector3 pos)
+    {
+        if(agent.isStopped)
+            agent.isStopped = false;
+
+        // Flat distance
+        Vector3 flatPlayerPos = new Vector3(pos.x, transform.position.y, pos.z);
         Vector3 flatDirection = flatPlayerPos - transform.position;
 
         if (flatDirection.magnitude <= minApproachDistance)
-            return;
+            if (!directLOS)
+            {
+                hasSeenPlayer = false;
+                return;
+            }
 
-        float cooldown = (blinkController != null && blinkController.isHoldingBlink) ? 0.1f : 1.5f;
-        teleportTimer -= Time.deltaTime;
-
-        if (teleportTimer <= 0f)
-        {
-            teleportTimer = cooldown;
-            TeleportAlongPath();
-        }
+        agent.SetDestination(pos);
 
         // Rotate to face player
         if (flatDirection.sqrMagnitude > 0.0001f)
@@ -84,46 +201,48 @@ public class SCP173 : MonoBehaviour
         }
     }
 
-    void TeleportAlongPath()
+    void RandomPointRoam()
     {
-        NavMeshPath path = new NavMeshPath();
-        bool hasPath = agent.CalculatePath(player.transform.position, path);
-
-        if (!hasPath || path.corners.Length < 2)
-            return;
-
-        if (path.status != NavMeshPathStatus.PathComplete && path.status != NavMeshPathStatus.PathPartial)
-            return;
-
-        float remainingStep = teleportStepDistance;
-        Vector3 warpTarget = path.corners[0];
-
-        for (int i = 1; i < path.corners.Length; i++)
+        var chance = Random.Range(1, 1000);
+        var roll = Random.Range(1, 1000);
+        if(hasRoamPoint)
         {
-            float segmentLength = Vector3.Distance(warpTarget, path.corners[i]);
-
-            if (segmentLength <= remainingStep)
+            Vector3 flatDir = new Vector3(randomRoamPoint.x, transform.position.y, randomRoamPoint.z);
+            if(Vector3.Distance(flatDir, transform.position) <= 2f)
             {
-                remainingStep -= segmentLength;
-                warpTarget = path.corners[i];
+                hasRoamPoint = false;
             }
             else
             {
-                warpTarget = Vector3.MoveTowards(warpTarget, path.corners[i], remainingStep);
-                break;
+                Move(randomRoamPoint);
+                return;
+            }
+
+        }
+
+        if (chance == roll)
+        {
+            Vector3 randomDirection = Random.insideUnitSphere * 25;
+            randomDirection += transform.position;
+
+            if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, 25, NavMesh.AllAreas))
+            {
+                randomRoamPoint = hit.position;
+                hasRoamPoint = true;
+                roll = Random.Range(1, 1000);
             }
         }
-
-        float distToPlayer = Vector3.Distance(warpTarget, player.transform.position);
-        if (distToPlayer < minApproachDistance)
+        else
         {
-            Vector3 dirAway = (warpTarget - player.transform.position).normalized;
-            warpTarget = player.transform.position + dirAway * minApproachDistance;
+            roll = Random.Range(1, 1000);
         }
 
-        if (NavMesh.SamplePosition(warpTarget, out NavMeshHit hit, 2f, NavMesh.AllAreas))
-        {
-            agent.Warp(hit.position);
-        }
+    }
+    void KillPlayer()
+    {
+        Vector3 dir = (player.transform.position - transform.position).normalized;
+        transform.rotation = Quaternion.LookRotation(new Vector3(dir.x, 0, dir.z));
+
+        player.GetComponentInChildren<PlayerController>().Kill(2);
     }
 }

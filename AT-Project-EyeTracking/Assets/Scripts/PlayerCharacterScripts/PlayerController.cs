@@ -1,8 +1,10 @@
 using Interaction;
 using System;
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
@@ -24,6 +26,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private bool IsSprinting;
 
+    [SerializeField] private float sprintSpeed = 6f;
+
     [SerializeField] private float stamina;
 
     [SerializeField] private float maxStamina;
@@ -42,6 +46,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] public AudioManager audioManager;
 
+    [SerializeField] public bool isDead = false;
 
     public bool inventoryActive = false;
 
@@ -53,6 +58,7 @@ public class PlayerController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+
         if (characterController == null)
         {
             characterController = GetComponent<CharacterController>();
@@ -66,6 +72,7 @@ public class PlayerController : MonoBehaviour
         {
             audioManager = FindAnyObjectByType<AudioManager>();
         }
+        //audioManager.PlayLoopedAudio(audioManager.scp096Audio, audioManager.scp096Slash2);
 
         stamina = 10;
 
@@ -112,10 +119,13 @@ public class PlayerController : MonoBehaviour
             DocumentUI.SetActive(true);
         }
 
-        Move(MoveInput);
-        CheckGrounded();
-        ApplyGravity();
-        Sprint();
+        if (!isDead)
+        {
+            Move(MoveInput);
+            CheckGrounded();
+            ApplyGravity();
+            Sprint();
+        }
     }
 
     private void FixedUpdate()
@@ -144,7 +154,7 @@ public class PlayerController : MonoBehaviour
         staminaSlider.value = stamina;
         if (IsSprinting)
         {
-            moveSpeed = 6;
+            moveSpeed = sprintSpeed;
             stamina -= Time.deltaTime;
         }
         else
@@ -184,7 +194,8 @@ public class PlayerController : MonoBehaviour
         {
             gravityVector.y -= gravity * Time.deltaTime;
         }
-        characterController.Move(gravityVector);
+        if(!isDead)
+             characterController.Move(gravityVector);
     }
 
     public void OnInteract(InputAction.CallbackContext context)
@@ -220,6 +231,101 @@ public class PlayerController : MonoBehaviour
         equippedItem.enabled = false;
         equippedItem.sprite = null;
 
+    }
+
+    public void Kill(int DeathID)
+    {
+        StartCoroutine(DeathSequence(DeathID));
+    }
+
+    private IEnumerator DeathSequence(int DeathID)
+    {
+        if(DeathID == 1)
+        {
+            sprintSpeed = 2.5f;
+            audioManager.PlayLoopedAudio(audioManager.playerAlt, audioManager.heartBeatFast, 0.7f); 
+            yield return StartCoroutine(HeartAttack());
+            yield return StartCoroutine(FallOver());
+            SceneManager.LoadScene("DeathScene");
+
+        }
+        else if(DeathID == 2)
+        {
+
+            audioManager.PlayNeckSnap();
+            yield return StartCoroutine(FallOver());
+
+
+            Debug.Log("Player has died");
+            SceneManager.LoadScene("DeathScene");
+
+        }
+        else if(DeathID == 3)
+        {
+            yield return StartCoroutine(FallOver());
+            audioManager.PlayLoopedAudio(audioManager.scp096Audio, audioManager.scp096Slash2);
+        }
+    }
+
+    private IEnumerator HeartAttack()
+    {
+
+        float elapsed = 0f;
+        float heartAttackDuration = 10f;
+
+
+        while (elapsed < heartAttackDuration)
+        { 
+            elapsed += Time.deltaTime;
+            float t = elapsed / heartAttackDuration;
+
+
+            
+            stamina -= Time.deltaTime * 4;
+            if(stamina < 0f) stamina = 0f;
+
+            moveSpeed = Mathf.Lerp(moveSpeed, 0f, t * 0.050f); 
+
+            if(characterController.enabled) characterController.Move(Physics.gravity * Time.deltaTime);
+
+            yield return null;
+        }
+    }
+
+    private IEnumerator FallOver()
+    {
+        isDead = true;
+        characterController.enabled = false; 
+        playerInput.enabled = false; 
+
+
+        Quaternion startRot = Quaternion.Euler(0f, transform.eulerAngles.y, 0f); transform.rotation = startRot;
+
+        Quaternion endRot = startRot * Quaternion.Euler(0f, 0f, 90f);
+
+
+        Vector3 startPos = transform.position;
+
+        Vector3 endPos = startPos - transform.up * 0.1f;
+
+        this.GetComponentInChildren<CameraController>().enabled = false;
+
+        float elapsed = 0f;
+        while (elapsed < 2.5f)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.SmoothStep(0f, 1f, elapsed / 2.5f);
+
+            transform.rotation = Quaternion.Slerp(startRot, endRot, t);
+
+            float angle = t * 90f * Mathf.Deg2Rad;
+            float drop = 0.6f * (1f - Mathf.Cos(angle));
+            transform.position = startPos - Vector3.up * drop;
+            yield return null;
+        }
+
+        transform.rotation = endRot;
+        yield return new WaitForSeconds(1f); 
     }
     #region To fix error: Ambiguous invocation of OnMove(InputAction.CallbackContext) and OnMove(InputValue)
     private void OnMove(InputValue value)

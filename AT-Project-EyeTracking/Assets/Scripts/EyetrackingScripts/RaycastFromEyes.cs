@@ -22,6 +22,10 @@ public class RaycastFromEyes : BeamEyeTrackerMonoBehaviour
 
     [SerializeField] LayerMask LayerMask173;
 
+    private float CloseRangeRadius = 4f;
+
+    public bool lookingAt173 = false;
+
     [SerializeField] LayerMask wallMask;
 
     [SerializeField] LayerMask LayerMask096Face;
@@ -66,30 +70,52 @@ public class RaycastFromEyes : BeamEyeTrackerMonoBehaviour
 
         if (!blinkController.isBlinking)
         {
-            // Raycast for Viewing SCP 173
+            bool foundTarget = false;
+
+            // --- SphereCast for normal range ---
             if (Physics.SphereCast(ray, SpherCastScale, out RaycastHit hitInfo, maxRayDistance, LayerMask173))
             {
-                //Debug.Log("SphereCast Hit:" + hitInfo.collider.name + "Layer" + LayerMask.LayerToName(hitInfo.collider.gameObject.layer) + " | Tag: " + hitInfo.collider.tag);
                 if (Physics.Raycast(ray, out RaycastHit closeObject, 3f, LayerMask173))
                 {
                     currentViewedObject = closeObject.collider.gameObject;
+                    if(currentViewedObject.tag == "173")
+                    {
+                        lookingAt173 = true;
+                        foundTarget = true;
+                    }
                     Debug.Log("Close raycast hit: " + closeObject.collider.name);
-                    
                 }
                 else
                 {
                     currentViewedObject = hitInfo.collider.gameObject;
+                    lookingAt173 = true;
                     Debug.Log("Hit object: " + hitInfo.collider.tag);
                 }
-            }
-            else
-            {
-                //Debug.Log("SphereCast hit NOTHING");
-                currentViewedObject = null;
+                foundTarget = true;
             }
 
-            // Raycasr for Viewing SCP 096s face
-            if (Physics.SphereCast(ray, 1.5f, out RaycastHit faceHit, rayDist096, LayerMask096Face))
+            // --- Close range fallback ---
+            if (!foundTarget && currentViewedObject != null)
+            {
+                float dist = Vector3.Distance(currentViewedObject.transform.position, ray.origin);
+
+                if (dist < CloseRangeRadius)
+                {
+                    Debug.Log("Close range lock maintained: " + currentViewedObject.name);
+                    lookingAt173 = true;
+                    foundTarget = true;
+                }
+            }
+
+            if (!foundTarget)
+            {
+                lookingAt173 = false;
+                currentViewedObject = null;
+            }
+        }
+
+        // Raycasr for Viewing SCP 096s face
+        if (Physics.SphereCast(ray, 1.5f, out RaycastHit faceHit, rayDist096, LayerMask096Face))
             {
                 if (faceHit.collider.CompareTag("096Face"))
                 {
@@ -134,8 +160,6 @@ public class RaycastFromEyes : BeamEyeTrackerMonoBehaviour
            
         }
 
-    }
-
     void OnDrawGizmos()
     {
         if (mainCamera == null)
@@ -143,12 +167,22 @@ public class RaycastFromEyes : BeamEyeTrackerMonoBehaviour
         Gizmos.color = Color.red;
         Ray ray = mainCamera.ViewportPointToRay(viewportPos);
         Gizmos.DrawLine(ray.origin, ray.GetPoint(maxRayDistance));
-        Debug.DrawRay(ray.origin, ray.direction, Color.blue, 1f);
+        //Debug.DrawRay(ray.origin, ray.direction, Color.blue, 1f);
         for (float i = 0; i < maxRayDistance; i += 0.5f)
         {
             Gizmos.DrawWireSphere(ray.GetPoint(i), SpherCastScale);
         }
 
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(ray.origin, ray.origin + ray.direction * 3f);
 
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(ray.origin + ray.direction * 3f, 0.05f);
+
+        if (Physics.Raycast(ray, out RaycastHit hit, 3f, LayerMask173))
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawSphere(hit.point, 0.1f);
+        }
     }
 }

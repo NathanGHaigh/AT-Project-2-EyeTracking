@@ -310,7 +310,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   watchedTime: 0
-  lookAwayGracePeriod: 5
+  lookAwayGracePeriod: 10
   watchedQuota: 10
 --- !u!65 &2255762575301885639
 BoxCollider:

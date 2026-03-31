@@ -16,12 +16,18 @@ public class InvenSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
 
     public AudioManager audioManager;
 
+    [SerializeField] private TextMeshProUGUI slotItemName;
+
     private void Awake()
     {
         iconImage = transform.GetChild(0).GetComponent<Image>();
         color = this.GetComponent<Image>().color;
         audioManager = FindAnyObjectByType<AudioManager>();
-        
+    }
+
+    private void Start()
+    {
+        slotItemName.text = "";
     }
 
     private void Update()
@@ -29,10 +35,12 @@ public class InvenSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
         if (hovering)
         {
             this.GetComponent<Image>().color = Color.white;
+            slotItemName.text = heldItem != null ? heldItem.objName : "";
         }
         else
         {
             this.GetComponent<Image>().color = color;
+            slotItemName.text = "";
         }
     }
 
@@ -87,7 +95,6 @@ public class InvenSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandle
     public void OnPointerEnter(PointerEventData eventData)
     {
         hovering = true;
-        Debug.Log(gameObject.name);
     }
 
     public void OnPointerExit(PointerEventData eventData)

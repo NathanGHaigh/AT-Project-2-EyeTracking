@@ -9,12 +9,24 @@ public class ChaseState : States
     public NavMeshAgent agent;
 
     public Animator animator;
+
+    AudioManager audioManager;
+
+    bool hasKilledPlayer = false;
+    bool killTriggered = false;
     public override States RunCurrentState()
     {
+        audioManager = FindAnyObjectByType<AudioManager>();
         agent.speed = 10f;
         agent.autoBraking = false;
         RunAtPlayer();
         InAttackRange();
+        if(hasKilledPlayer && !killTriggered)
+        {
+            killTriggered = true;
+            Player.GetComponent<PlayerController>().Kill(3);
+            audioManager.PlaySCP096Slash();
+        }
         return this;
     }
 
@@ -29,7 +41,6 @@ public class ChaseState : States
         }
         else if (path.status == NavMeshPathStatus.PathPartial)
         {
-            // Move to the furthest reachable point toward the player
             Vector3 bestPoint = path.corners[path.corners.Length - 1];
             agent.SetDestination(bestPoint);
         }
@@ -69,7 +80,9 @@ public class ChaseState : States
         //Debug.Log(distanceToPlayer);
         if(distanceToPlayer < 2)
         {
+            agent.speed = 0f;
             animator.SetBool("InAttackRange", true);
+            hasKilledPlayer = true;
             return true;
         }
 

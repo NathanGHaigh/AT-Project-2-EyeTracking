@@ -84,10 +84,27 @@ public class IdleState : States
         if (agent.remainingDistance <= agent.stoppingDistance)
         {
             Vector3 point;
-            if (RandomPoint(centrePoint.position, range, out point))
+            animator.SetBool("IsWalking", false);
+            var value = Random.Range(0, 100);
+            var roll = Random.Range(0, 100);
+            if (roll == value)
             {
-                Debug.DrawRay(point, Vector3.up, Color.blue, 1.0f);
-                agent.SetDestination(point);
+                if (RandomPoint(centrePoint.position, range, out point))
+                {
+                    Debug.DrawRay(point, Vector3.up, Color.blue, 1.0f);
+                    agent.SetDestination(point);
+                    animator.SetBool("IsWalking", true);
+                    var timeToWait = 20f;
+                    timeToWait -= Time.deltaTime;
+                    if(timeToWait < 0)
+                    {
+                        agent.SetDestination(centrePoint.position);
+                    }
+                }
+            }
+            else
+            {
+                roll = Random.Range(0, 100);
             }
 
         }

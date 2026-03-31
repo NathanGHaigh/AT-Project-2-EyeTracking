@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 using static UnityEngine.GraphicsBuffer;
 
 enum WatchState
@@ -11,11 +12,15 @@ public class SCP689 : MonoBehaviour
 {
     [SerializeField] WatchState state;
 
+    public bool isWatched;
+
     GameObject player;
 
     RaycastFromEyes raycastFromEyes;
 
     EncounterManager encounterManager;
+
+    AudioManager audioManager;
 
     public float watchedTime;
 
@@ -23,15 +28,20 @@ public class SCP689 : MonoBehaviour
 
     public float watchedQuota = 10;
 
+    public bool playerDead = false;
+
     private void Awake()
     {
         raycastFromEyes = FindAnyObjectByType<RaycastFromEyes>();
         encounterManager = FindAnyObjectByType<EncounterManager>();
         player = GameObject.Find("Player 1");
+        audioManager = FindAnyObjectByType<AudioManager>();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        AudioManager audioManager = FindAnyObjectByType<AudioManager>();
+        audioManager.Play689Spawn();
         var lookPos = player.transform.position - transform.position;
         lookPos.y = 0;
         var rotation = Quaternion.LookRotation(lookPos);
@@ -61,12 +71,14 @@ public class SCP689 : MonoBehaviour
 
             case WatchState.Watched:
                 {
+                    isWatched = true;
                     WatchedState();
                 }
                 break;
 
             case WatchState.UnWatched:
                 {
+                    isWatched = false;
                     UnWatchedState();
                 }
                 break;
@@ -80,7 +92,10 @@ public class SCP689 : MonoBehaviour
         watchedTime += Time.deltaTime;
         if(watchedTime > watchedQuota)
         {
+            AudioManager audioManager = FindAnyObjectByType<AudioManager>();
+            audioManager.Play689Despawn();
             encounterManager.Despawn689(this.gameObject);
+
             Debug.Log("689 Despawn");
         }
 
@@ -89,11 +104,13 @@ public class SCP689 : MonoBehaviour
     void UnWatchedState()
     {
         if (lookAwayGracePeriod > 0)
-        {
+        { 
             lookAwayGracePeriod -= Time.deltaTime;
         }
-        if(lookAwayGracePeriod < 0 )
+        if(lookAwayGracePeriod < 0 && !playerDead)
         {
+            playerDead = true;
+            player.GetComponentInChildren<PlayerController>().Kill(1);
             Debug.Log("DEAD");
         }
     }

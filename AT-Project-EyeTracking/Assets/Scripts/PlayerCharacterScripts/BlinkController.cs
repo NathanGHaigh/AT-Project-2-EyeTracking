@@ -5,11 +5,11 @@ using UnityEngine.UI;
 
 public class BlinkController : MonoBehaviour
 {
-    [SerializeField] private float blinkDuration = 0.1f; // Duration of the blink in seconds
+    [SerializeField] private float blinkDuration = 0.1f;
 
-    [SerializeField] private float blinkInterval; // Time between blinks in seconds
+    [SerializeField] private float blinkInterval; 
 
-    [SerializeField] private float maxBlinkInterval = 10f; // Maximum time between blinks in seconds
+    [SerializeField] private float maxBlinkInterval = 10f;
 
     [SerializeField] Slider sliderBlink;
 
@@ -79,6 +79,10 @@ public class BlinkController : MonoBehaviour
         isHoldingBlink = held;
         blinkImage.SetActive(true); 
         raycastFromEyes.currentViewedObject = null; 
+        if(raycastFromEyes.lookingAt173)
+        {
+            raycastFromEyes.lookingAt173 = false;
+        }
 
         blinkInterval = 0f; 
 
