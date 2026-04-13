@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dec1fc471b4267147b3d1f80cb126b8b, type: 3}
   m_Name: EyeDrops
   m_EditorClassIdentifier: 
-  id: 4
+  id: 5
   objName: Eyedrops
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 5742bc704f8f22f4ca52ca48810d83fb, type: 3}
   prefab: {fileID: 0}
   duration: 30
-  useValue: 20
+  useValue: -0.5

@@ -16,10 +16,13 @@ public class SCP173 : MonoBehaviour
     private RaycastFromEyes raycastFromEyes;
     private AudioManager audioManager;
     private BlinkController blinkController;
+    private scp173Audio scp173Audio;
     private float teleportTimer = 0f;
     [SerializeField] private bool beingLookedAt = false;
 
     [SerializeField] private bool directLOS = false;
+
+    [SerializeField] private LayerMask layersToAccount;
 
     [SerializeField] private bool hasSeenPlayer = false;
 
@@ -39,6 +42,8 @@ public class SCP173 : MonoBehaviour
 
     [SerializeField] bool hasRoamPoint = false;
 
+    public bool isMoving = false;
+
     void Start()
     {
         if (player != null)
@@ -46,6 +51,7 @@ public class SCP173 : MonoBehaviour
             raycastFromEyes = player.GetComponentInChildren<RaycastFromEyes>();
             blinkController = player.GetComponentInChildren<BlinkController>();
             audioManager = FindAnyObjectByType<AudioManager>();
+            scp173Audio = FindAnyObjectByType<scp173Audio>();
         }
 
         if (agent != null)
@@ -73,6 +79,9 @@ public class SCP173 : MonoBehaviour
             hasEverSeenPlayer = false;
             lastSawPlayer = 0;
             audioTrigger = false;
+            isMoving = false;
+            scp173Audio.audioClip = null;
+            scp173Audio.StopAudio();
             return;
         }
 
@@ -92,6 +101,21 @@ public class SCP173 : MonoBehaviour
             }
         }
 
+        if (isMoving && agent.velocity.magnitude <= 0.1f)
+        {
+            isMoving = false;
+        }
+
+        if (isMoving)
+        {
+            scp173Audio.PlayAudio();
+        }
+
+        else
+        {
+            scp173Audio.StopAudio();
+        }
+
 
         if (hasEverSeenPlayer)
         {
@@ -102,9 +126,9 @@ public class SCP173 : MonoBehaviour
             else
             {
                 lastSawPlayer += Time.deltaTime;
-                if(lastSawPlayer > 60)
+                if (lastSawPlayer > 60)
                 {
-                    if(!audioTrigger)
+                    if (!audioTrigger)
                         audioTrigger = true;
                 }
             }
@@ -126,6 +150,7 @@ public class SCP173 : MonoBehaviour
 
             if (beingLookedAt)
             {
+                isMoving = false;
                 teleportTimer = 0f;
                 agent.isStopped = true;
                 if(DistancetoPlayer < 10 && directLOS && audioTrigger)
@@ -143,7 +168,7 @@ public class SCP173 : MonoBehaviour
                 KillPlayer();
                 return;
             }
-
+            isMoving = true;
             Move(lastPlayerPos);
         }
 
@@ -152,13 +177,14 @@ public class SCP173 : MonoBehaviour
             if (hasSeenPlayer && !beingLookedAt)
             {
                 Move(lastPlayerPos);
+                isMoving = true;
             }
         }
     }
 
     private bool HasDirectLos()
     {
-        if (Physics.Raycast(transform.position + offset, (player.gameObject.transform.position + offset - transform.position), out RaycastHit hitInfo, range))
+        if (Physics.Raycast(transform.position + offset, (player.gameObject.transform.position + offset - transform.position), out RaycastHit hitInfo, range, layersToAccount))
         {
             if(hitInfo.collider.CompareTag("Player"))
             {
@@ -192,6 +218,7 @@ public class SCP173 : MonoBehaviour
             }
 
         agent.SetDestination(pos);
+        isMoving = true;
 
         // Rotate to face player
         if (flatDirection.sqrMagnitude > 0.0001f)

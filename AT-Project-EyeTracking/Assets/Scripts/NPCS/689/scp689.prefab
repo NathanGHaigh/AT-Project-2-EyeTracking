@@ -219,15 +219,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4167280743394806330, guid: 042c5732f896e71468676514ca761767, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.005045414
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 4167280743394806330, guid: 042c5732f896e71468676514ca761767, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.060049593
+      value: -0.1329
       objectReference: {fileID: 0}
     - target: {fileID: 4167280743394806330, guid: 042c5732f896e71468676514ca761767, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.0689
+      value: -0.0547
       objectReference: {fileID: 0}
     - target: {fileID: 4167280743394806330, guid: 042c5732f896e71468676514ca761767, type: 3}
       propertyPath: m_LocalRotation.w
@@ -256,6 +256,14 @@ PrefabInstance:
     - target: {fileID: 4167280743394806330, guid: 042c5732f896e71468676514ca761767, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 7876023681238672744, guid: 042c5732f896e71468676514ca761767, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.2205
+      objectReference: {fileID: 0}
+    - target: {fileID: 7876023681238672744, guid: 042c5732f896e71468676514ca761767, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.0083
       objectReference: {fileID: 0}
     - target: {fileID: 7876023681238672744, guid: 042c5732f896e71468676514ca761767, type: 3}
       propertyPath: m_LocalRotation.w
@@ -309,9 +317,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
+  isWatched: 0
   watchedTime: 0
   lookAwayGracePeriod: 10
   watchedQuota: 10
+  playerDead: 0
 --- !u!65 &2255762575301885639
 BoxCollider:
   m_ObjectHideFlags: 0

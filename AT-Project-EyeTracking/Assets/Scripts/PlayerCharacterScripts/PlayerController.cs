@@ -20,11 +20,11 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private Vector2 MoveInput;
 
+    [SerializeField] public bool isMoving;
+
     [SerializeField] public float Health = 100f;
 
-    [SerializeField] public bool IsMoving;
-
-    [SerializeField] private bool IsSprinting;
+    [SerializeField] public bool IsSprinting;
 
     [SerializeField] private float sprintSpeed = 6f;
 
@@ -34,7 +34,11 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private float minStamina;
 
-    [SerializeField] private Slider staminaSlider;
+    [SerializeField] private LinearProgressBar staminaSlider;
+
+    [SerializeField] private Image staminaIcon;
+
+    [SerializeField] private Sprite idleSprite, movingSprite, sprintingSprite;
 
     [SerializeField] private PlayerInput playerInput;
 
@@ -48,16 +52,29 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] public bool isDead = false;
 
+    DeathCodeStore deathCodeStore;
+
     public bool inventoryActive = false;
 
     public GameObject InventoryUI;
 
     public bool documentUIActive = false;
 
+    public bool activeEyedrops = false;
+    public float rateEyedrops;
+    public float eyeDropDuration;
+
+    public bool activeAdrenaline = false;
+    public float adrenalineDuration;
+
     public GameObject DocumentUI;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if(deathCodeStore == null)
+        {
+            deathCodeStore = FindAnyObjectByType<DeathCodeStore>();
+        }
 
         if (characterController == null)
         {
@@ -76,9 +93,9 @@ public class PlayerController : MonoBehaviour
 
         stamina = 10;
 
-        staminaSlider = GameObject.Find("StaminaBar").GetComponent<Slider>();
-        staminaSlider.maxValue = maxStamina;
-        staminaSlider.minValue = minStamina;
+        staminaSlider = GameObject.Find("StaminaBar").GetComponent<LinearProgressBar>();
+        staminaSlider.maximum = maxStamina;
+        staminaSlider.minimum = minStamina;
     }
 
     private void OnEnable()
@@ -122,6 +139,7 @@ public class PlayerController : MonoBehaviour
         if (!isDead)
         {
             Move(MoveInput);
+            IconSetter();
             CheckGrounded();
             ApplyGravity();
             Sprint();
@@ -130,18 +148,18 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        
+        UpdateEffects();
     }
 
     private void OnMove(InputAction.CallbackContext context)
     {
-        IsMoving = context.ReadValue<Vector2>() != Vector2.zero;
+        isMoving = context.ReadValue<Vector2>() != Vector2.zero;
         MoveInput = context.ReadValue<Vector2>();
     }
 
     private void SprintStart()
     {
-
+        if(isMoving && stamina > 0)
             IsSprinting = true;
     }
 
@@ -151,11 +169,18 @@ public class PlayerController : MonoBehaviour
     }
     private void Sprint()
     {
-        staminaSlider.value = stamina;
+        staminaSlider.currentValue = stamina;
         if (IsSprinting)
         {
             moveSpeed = sprintSpeed;
-            stamina -= Time.deltaTime;
+            if (activeAdrenaline)
+            {
+                stamina -= Time.deltaTime;
+            }
+            else
+            {
+                stamina -= Time.deltaTime * 2;
+            }
         }
         else
         {
@@ -173,7 +198,23 @@ public class PlayerController : MonoBehaviour
             IsSprinting = false;
         }
     }
+    private void IconSetter()
+    {
+        if (isMoving && !IsSprinting)
+        {
+            staminaIcon.sprite = movingSprite;
+        }
 
+        if(isMoving && IsSprinting)
+        {
+            staminaIcon.sprite = sprintingSprite;
+        }
+
+        if(!isMoving)
+        {
+            staminaIcon.sprite = idleSprite;
+        }
+    }
     private void Move(Vector3 moveDirection)
     {
         Vector3 motion = transform.forward * MoveInput.y + transform.right * MoveInput.x;
@@ -242,6 +283,7 @@ public class PlayerController : MonoBehaviour
     {
         if(DeathID == 1)
         {
+            deathCodeStore.DeathID = 1;
             sprintSpeed = 2.5f;
             audioManager.PlayLoopedAudio(audioManager.playerAlt, audioManager.heartBeatFast, 0.7f); 
             yield return StartCoroutine(HeartAttack());
@@ -251,7 +293,7 @@ public class PlayerController : MonoBehaviour
         }
         else if(DeathID == 2)
         {
-
+            deathCodeStore.DeathID = 2;
             audioManager.PlayNeckSnap();
             yield return StartCoroutine(FallOver());
 
@@ -262,8 +304,11 @@ public class PlayerController : MonoBehaviour
         }
         else if(DeathID == 3)
         {
+            deathCodeStore.DeathID = 3;
             yield return StartCoroutine(FallOver());
             audioManager.PlayLoopedAudio(audioManager.scp096Audio, audioManager.scp096Slash2);
+            yield return new WaitForSeconds(2f);
+            SceneManager.LoadScene("DeathScene");
         }
     }
 
@@ -336,5 +381,26 @@ public class PlayerController : MonoBehaviour
     private void OnInteract(InputValue value) { }
 
     private void OnSprint(InputValue value) { }
+    private void UpdateEffects()
+    {
+        if (activeEyedrops)
+        {
+            eyeDropDuration -= Time.deltaTime;
+            if (eyeDropDuration <= 0)
+            {
+                eyeDropDuration = 0;
+                activeEyedrops = false;
+            }
+        }
+        if (activeAdrenaline)
+        {
+            adrenalineDuration -= Time.deltaTime;
+            if (adrenalineDuration <= 0)
+            {
+                adrenalineDuration = 0;
+                activeAdrenaline = false;
+            }
+        }
+    }
     #endregion
 }

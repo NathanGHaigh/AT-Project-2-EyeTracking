@@ -51,7 +51,8 @@ MonoBehaviour:
   player: {fileID: 0}
   active: {fileID: 2100000, guid: 64e13c1a2f7124c4092791cb34f1b106, type: 2}
   inActive: {fileID: 2100000, guid: 0c9d2dfd9700086408269653bb944277, type: 2}
-  panel: {fileID: 6422231967067540167}
+  Broken: {fileID: 2100000, guid: 1624db7cf24cf4b40b15269412367fc4, type: 2}
+  panel: {fileID: 5209617816959966852}
   coolDownTimer: 0
   timeToSet: 2
   linkedDoor: {fileID: 5548355414739157094}
@@ -91,7 +92,7 @@ AudioSource:
   m_GameObject: {fileID: 677597305075061571}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -2940319779576884067, guid: 2a4ad3de13830624f8bd4f394fa6cde3, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
@@ -193,7 +194,7 @@ GameObject:
   - component: {fileID: 4480391597394837329}
   - component: {fileID: 2631780278419811647}
   - component: {fileID: 8974533049437191477}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: Door
   m_TagString: Door
   m_Icon: {fileID: 0}
@@ -379,6 +380,7 @@ MonoBehaviour:
   player: {fileID: 0}
   active: {fileID: 2100000, guid: 64e13c1a2f7124c4092791cb34f1b106, type: 2}
   inActive: {fileID: 2100000, guid: 0c9d2dfd9700086408269653bb944277, type: 2}
+  Broken: {fileID: 2100000, guid: 1624db7cf24cf4b40b15269412367fc4, type: 2}
   panel: {fileID: 6422231967067540167}
   coolDownTimer: 0
   timeToSet: 2
@@ -419,7 +421,7 @@ AudioSource:
   m_GameObject: {fileID: 1732567643976304384}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -2940319779576884067, guid: 2a4ad3de13830624f8bd4f394fa6cde3, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
@@ -520,7 +522,7 @@ GameObject:
   - component: {fileID: 5277910627283727483}
   - component: {fileID: 7231988141699355670}
   - component: {fileID: 6047541051977873953}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: Door.001
   m_TagString: Door
   m_Icon: {fileID: 0}
@@ -641,7 +643,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3776427687037967539}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: armature
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -674,7 +676,7 @@ GameObject:
   - component: {fileID: 7151563215509368878}
   - component: {fileID: 6335584001177002589}
   - component: {fileID: 8236101279420969693}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: DoorFrame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -760,7 +762,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6812796704914427243}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: Duplicate00
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1053,7 +1055,7 @@ GameObject:
   - component: {fileID: 5529014793644708862}
   - component: {fileID: 8946943273092108446}
   - component: {fileID: 2124075103817679923}
-  m_Layer: 3
+  m_Layer: 12
   m_Name: Door-0-Keycard
   m_TagString: Door
   m_Icon: {fileID: 0}
@@ -1122,6 +1124,8 @@ MonoBehaviour:
   source: {fileID: 2124075103817679923}
   dooropen: {fileID: 8300000, guid: ad9f617676701dd469d330144ee5b5e3, type: 3}
   doorclose: {fileID: 8300000, guid: f9f4fe8f152e21344a34a70d8bcea2d7, type: 3}
+  linkedButtons: []
+  linkedButtons2: []
   state: 0
 --- !u!65 &8946943273092108446
 BoxCollider:
@@ -1153,7 +1157,7 @@ AudioSource:
   m_GameObject: {fileID: 5548355414739157094}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -2940319779576884067, guid: 2a4ad3de13830624f8bd4f394fa6cde3, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
@@ -1336,7 +1340,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3972807607378786274}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: Duplicate01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1367,7 +1371,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6438723711700099665}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: Scene_Root.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1401,7 +1405,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1079798035407206285}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: Mesh01
   m_TagString: Untagged
   m_Icon: {fileID: 0}

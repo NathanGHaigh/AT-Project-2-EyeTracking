@@ -1,3 +1,5 @@
+using Interaction;
+using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -28,11 +30,16 @@ public class Door : MonoBehaviour
     [SerializeField] public AudioClip dooropen;
     [SerializeField] public AudioClip doorclose;
 
-    [SerializeField]    
+    [SerializeField] private List<DoorKeycard> linkedButtons = new();
+
+    [SerializeField] private List<DoorButton> linkedButtons2 = new();
+
+    [SerializeField]
     State state;
     public void Start()
     {
-
+        linkedButtons.AddRange(GetComponentsInChildren<DoorKeycard>());
+        linkedButtons2.AddRange(GetComponentsInChildren<DoorButton>());
     }
 
     public void Update()
@@ -46,7 +53,7 @@ public class Door : MonoBehaviour
             case State.Normal:
                 if (needsKeycard)
                 {
-                    if(item != null)
+                    if (item != null)
                         if (item.AccessLevel >= levelAccess)
                         {
                             if (isOpen)
@@ -87,7 +94,7 @@ public class Door : MonoBehaviour
                 break;
         }
     }
-    
+
 
     public void OpenDoor()
     {
@@ -101,5 +108,48 @@ public class Door : MonoBehaviour
         isOpen = false;
         doorAnim.SetTrigger("Close");
 
+    }
+
+    public void Power()
+    {
+        if (state == State.UnPowered)
+        {
+            state = State.Normal;
+        }
+    }
+    public int stateID()
+    {
+        if (state == State.Normal)
+            return 0;
+        else if (state == State.Broken)
+        {
+            return 1;
+        }
+        else if (state == State.UnPowered)
+        {
+            return 2;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    public void UpdatePanel()
+    {
+        if(linkedButtons.Count > 0)
+        {
+            foreach (DoorKeycard button in linkedButtons)
+            {
+                button.UpdatePanel();
+            }
+        }
+        if(linkedButtons2.Count > 0)
+        {
+            foreach (DoorButton button in linkedButtons2)
+            {
+                button.UpdatePanel();
+            }       
+        }
     }
 }

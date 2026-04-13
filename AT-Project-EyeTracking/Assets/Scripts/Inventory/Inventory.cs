@@ -99,10 +99,12 @@ public class Inventory : BeamEyeTrackerMonoBehaviour
     {
         if (dragSlot == null)
         {
+            Debug.Log("No current drag slot, starting new drag.");
             StartDrag();
         }
         else
         {
+            Debug.Log("Ending current drag.");
             EndDrag();
         }
     }
@@ -146,7 +148,7 @@ public class Inventory : BeamEyeTrackerMonoBehaviour
     {
         if(dragSlot != null)
         {
-            if(dragSlot.GetItem() is ItemKeyCard)
+            if (dragSlot.GetItem() is ItemKeyCard)
             {
                 audioManager.SelectedItem();
                 equippedItemImage.sprite = dragSlot.GetItem().icon;
@@ -155,9 +157,9 @@ public class Inventory : BeamEyeTrackerMonoBehaviour
                 dragSlot = null;
                 isDragging = false;
                 dragImage.enabled = false;
-                player.GetComponentInChildren<PlayerController>().inventoryActive = false;    
+                player.GetComponentInChildren<PlayerController>().inventoryActive = false;
             }
-            else if(dragSlot.GetItem() is ItemDocument)
+            else if (dragSlot.GetItem() is ItemDocument)
             {
                 var documentItem = dragSlot.GetItem() as ItemDocument;
                 player.GetComponentInChildren<PlayerController>().documentUIActive = true;
@@ -167,8 +169,26 @@ public class Inventory : BeamEyeTrackerMonoBehaviour
                 dragImage.enabled = false;
                 player.GetComponent<PlayerController>().inventoryActive = false;
                 audioManager.PaperSelect();
-                
-
+            }
+            else if (dragSlot.GetItem() is ItemUsable)
+            {
+                Debug.Log("Using Usable Item");
+                Debug.Log(dragSlot.GetItem().id);
+                if(dragSlot.GetItem().id == "5")
+                {
+                    Debug.Log("Using EyeDrops");
+                    player.GetComponentInChildren<PlayerController>().eyeDropDuration = (dragSlot.GetItem() as ItemUsable).duration;
+                    player.GetComponentInChildren<PlayerController>().rateEyedrops = (dragSlot.GetItem() as ItemUsable).useValue;
+                    player.GetComponentInChildren<PlayerController>().activeEyedrops = true;
+                    DeleteItem();
+                }
+                else if (dragSlot.GetItem().id == "6")
+                {
+                    Debug.Log("Using Adrenaline");
+                    player.GetComponentInChildren<PlayerController>().adrenalineDuration = (dragSlot.GetItem() as ItemUsable).duration;
+                    player.GetComponentInChildren<PlayerController>().activeAdrenaline = true;
+                    DeleteItem();
+                }
             }
             else
             {
@@ -195,9 +215,15 @@ public class Inventory : BeamEyeTrackerMonoBehaviour
         dragSlot = null;
         isDragging= false;
         dragImage.enabled = false;
-        
+    }
 
-
+    private void DeleteItem()
+    {
+        Debug.Log("Deleting Item");
+        dragSlot.ClearSlot();
+        dragSlot = null;
+        isDragging = false;
+        dragImage.enabled = false;
     }
 
     private InvenSlot GetHoveredSlot()

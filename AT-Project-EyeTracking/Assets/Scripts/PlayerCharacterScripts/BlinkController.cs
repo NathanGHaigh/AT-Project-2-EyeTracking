@@ -5,17 +5,23 @@ using UnityEngine.UI;
 
 public class BlinkController : MonoBehaviour
 {
-    [SerializeField] private float blinkDuration = 0.1f;
+    [SerializeField] private float blinkDuration = 0.25f;
 
     [SerializeField] private float blinkInterval; 
 
     [SerializeField] private float maxBlinkInterval = 10f;
 
-    [SerializeField] Slider sliderBlink;
+    [SerializeField] LinearProgressBar sliderBlink;
 
     [SerializeField] GameObject blinkImage;
 
+    [SerializeField] private Image blinkIcon;
+
+    [SerializeField] private Sprite eyeOpen, eyeClosed;
+
     [SerializeField] PlayerInput playerInput;
+
+    [SerializeField] private PlayerController playerController;
 
     public bool isBlinking;
 
@@ -30,6 +36,11 @@ public class BlinkController : MonoBehaviour
         {
             playerInput = GetComponentInParent<PlayerInput>();
         }
+        if(playerController == null)
+        {
+            playerController = GetComponentInParent<PlayerController>();
+        }
+
         playerInput.actions["Blink"].started += OnBlinkStarted;
         playerInput.actions["Blink"].canceled += OnBlinkCanceled;
     }
@@ -67,8 +78,13 @@ public class BlinkController : MonoBehaviour
     void Update()
     {
         if (!isBlinking)
-            blinkInterval += Time.deltaTime;
+            if(playerController.activeEyedrops)
+            {
+                blinkInterval -= Time.deltaTime * playerController.rateEyedrops;
+            }
+        blinkInterval -= Time.deltaTime;
         MangageBlinkSlider();
+        UpdateBlinkIcon();
         BlinkManager();
 
     }
@@ -98,18 +114,19 @@ public class BlinkController : MonoBehaviour
         isHoldingBlink = false;
         blinkImage.SetActive(false);
         blinkDurationRemaining = blinkDuration; 
-        blinkInterval = 0f; 
-        blinkDuration = 0.1f;
+        blinkInterval = maxBlinkInterval; 
+        blinkDuration = 0.25f;
     }
     private void SliderSetup()
     {
         if (sliderBlink == null)
         {
-            sliderBlink = GetComponent<Slider>();
+            sliderBlink = GetComponent<LinearProgressBar>();
             return;
         }
-        sliderBlink.minValue = 0f;
-        sliderBlink.maxValue = maxBlinkInterval;
+        sliderBlink.minimum = 0f;
+        sliderBlink.maximum = 10f;
+        blinkInterval = maxBlinkInterval;
     }
     private void MangageBlinkSlider()
     {
@@ -117,7 +134,14 @@ public class BlinkController : MonoBehaviour
         {
             return;
         }
-        sliderBlink.value = blinkInterval;
+        sliderBlink.currentValue = blinkInterval;
+    }
+
+    private void UpdateBlinkIcon()
+    {
+        if (blinkIcon == null)
+            return;
+        blinkIcon.sprite = isBlinking ? eyeClosed : eyeOpen;
     }
 
     private void BlinkManager()
@@ -135,13 +159,18 @@ public class BlinkController : MonoBehaviour
         }
         else
         {
-            if (blinkInterval >= maxBlinkInterval)
+            if (blinkInterval <= 0f)
             {
                 Debug.Log("Blink!");
                 StartBlink(held: false);
-                blinkInterval = 0f;
+                //blinkInterval = 10f;
             }
         }
+    }
+
+        public void ForceBlink()
+        {
+            StartBlink(held: false);
     }
 
     #region InputSystem inputvalues

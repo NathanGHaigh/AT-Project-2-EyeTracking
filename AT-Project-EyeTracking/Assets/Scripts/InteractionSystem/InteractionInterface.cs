@@ -11,8 +11,8 @@ namespace Interaction
     };
     public interface IInteractable
     {
-        public string MessageInteract { get; }
-        public Type Type { get; }
+        string MessageInteract { get; }
+        Type Type { get; }
         void Interact(InteractableControl interactableControl);
     }
 }

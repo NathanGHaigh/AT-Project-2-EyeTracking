@@ -7,6 +7,7 @@ TagManager:
   - SCP173
   - 096Face
   - Door
+  - 689
   layers:
   - Default
   - TransparentFX
@@ -19,9 +20,9 @@ TagManager:
   - Environment
   - Player
   - 096Face
-  - 
-  - 
-  - 
+  - 689
+  - 096DoorTrigger
+  - PP
   - 
   - 
   - 

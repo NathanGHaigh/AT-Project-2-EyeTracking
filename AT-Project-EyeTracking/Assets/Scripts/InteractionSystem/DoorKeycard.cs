@@ -11,6 +11,7 @@ namespace Interaction
 
         public Material active;
         public Material inActive;
+        public Material Broken;
 
         public GameObject panel;
 
@@ -21,8 +22,8 @@ namespace Interaction
         ItemKeyCard item; // Changed from Item to ItemKeyCard
 
         public GameObject linkedDoor;
-        public string MessageInteract => "Needs a Level " + linkedDoor.GetComponent<Door>().levelAccess + " Keycard to Operate";
-        public Type Type => Type.Interact;
+        public string MessageInteract { get; set; }
+        public Type Type { get; } = Type.Interact;
 
         public AudioSource source;
 
@@ -41,6 +42,8 @@ namespace Interaction
             player = GameObject.Find("Player 1");
 
             interactionText = GameObject.Find("IndicatorText").GetComponent<TextMeshProUGUI>();
+
+            UpdatePanel();
         }
         public void Interact(InteractableControl interactableControl)
         {
@@ -49,6 +52,26 @@ namespace Interaction
             {
                 if (player.GetComponent<PlayerController>().heldItem != null && player.GetComponent<PlayerController>().heldItem is ItemKeyCard)
                 {
+                    if(linkedDoor.GetComponent<Door>().stateID() == 1)
+                    {
+                        source.clip = buttonPress;
+                        interactionText.SetText("Nothing happens, must be broken");
+                        interactionTime = 5;
+                        source.Play();
+                        return;
+                    }
+                    if(linkedDoor.GetComponent<Door>().stateID() == 2)
+                    {
+                        source.clip = buttonPress;
+                        interactionText.SetText("Needs Power to Operate");
+                        interactionTime = 5;
+                        source.Play();
+                        return;
+                    }
+
+
+
+
                     item = player.GetComponent<PlayerController>().heldItem as ItemKeyCard;
                     if (item.AccessLevel >= linkedDoor.GetComponent<Door>().levelAccess)
                     {
@@ -61,7 +84,7 @@ namespace Interaction
                     }
                     else
                     {
-                        interactionText.SetText(MessageInteract);
+                        interactionText.SetText("Need a level " + linkedDoor.GetComponent<Door>().levelAccess + " Keycard to Operate");
                         interactionTime = 5;
                         source.clip = keycardUseFail;
                         source.Play();
@@ -71,7 +94,16 @@ namespace Interaction
                 {
                     item = null;
                     source.clip = buttonPress;
-                    interactionText.SetText("Needs a Keycard to Operate");
+                    if(linkedDoor.GetComponent<Door>().stateID() == 1)
+                    {
+                        interactionText.SetText("Nothing happens, must be broken");
+                    }
+                    else if(linkedDoor.GetComponent<Door>().stateID() == 2)
+                    {
+                        interactionText.SetText("Needs Power to Operate");
+                    }
+                    else
+                        interactionText.SetText("Needs a Keycard to Operate");
                     interactionTime = 5;
                     source.Play();
                 }
@@ -100,6 +132,27 @@ namespace Interaction
             {
                 interactionTime = 0;
                 interactionText.SetText("");
+            }
+        }
+
+
+        public void UpdatePanel()
+        {
+            var stateID = linkedDoor.GetComponent<Door>().stateID();
+            if (stateID == 0)
+            {
+                panel.GetComponent<Renderer>().material = inActive;
+                MessageInteract = "Needs a Keycard to Operate";
+            }
+            else if (stateID == 1)
+            {
+                panel.GetComponent<Renderer>().material = Broken;
+                MessageInteract = "Nothing happens, must be broken";
+            }
+            else if (stateID == 2)
+            {
+                panel.GetComponent<Renderer>().material = Broken;
+                MessageInteract = "Needs Power to Operate";
             }
         }
     }

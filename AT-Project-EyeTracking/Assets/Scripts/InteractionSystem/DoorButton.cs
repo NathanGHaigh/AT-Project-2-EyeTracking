@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,6 +10,7 @@ namespace Interaction
 
         public Material active;
         public Material inActive;
+        public Material Broken;
 
         public GameObject panel;
         public GameObject button;
@@ -35,7 +37,10 @@ namespace Interaction
             origin = button.transform.position;
 
             player = GameObject.Find("Player 1");
-        }
+
+            UpdatePanel();
+
+        }   
         public void Interact(InteractableControl interactableControl)
         {
             if (coolDownTimer == 0)
@@ -70,6 +75,25 @@ namespace Interaction
                 panel.GetComponent<Renderer>().material = inActive;
                 gameObject.GetComponent<Collider>().enabled = true;
                 coolDownTimer = 0;
+            }
+        }
+        public void UpdatePanel()
+        {
+            var stateID = linkedDoor.GetComponent<Door>().stateID();
+            if (stateID == 0)
+            {
+                panel.GetComponent<Renderer>().material = inActive;
+                gameObject.GetComponent<Collider>().enabled = true;
+            }
+            else if (stateID == 1)
+            {
+                panel.GetComponent<Renderer>().material = Broken;
+                gameObject.GetComponent<Collider>().enabled = false;
+            }
+            else if (stateID == 2)
+            {
+                panel.GetComponent<Renderer>().material = Broken;
+                gameObject.GetComponent<Collider>().enabled = false;
             }
         }
     }

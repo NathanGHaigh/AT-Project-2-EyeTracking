@@ -8,7 +8,7 @@ public class HeadSwayController : MonoBehaviour
 
     public float swayAmount = 0.05f;
 
-    private float swaySpeed = 5f;
+    public float swaySpeed = 5f;
 
     private float smoothSwayAmount = 6f;
 
@@ -30,7 +30,7 @@ public class HeadSwayController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(playerController.IsMoving)
+        if(playerController.isMoving)
         {
             SwaySideToSide();
         }

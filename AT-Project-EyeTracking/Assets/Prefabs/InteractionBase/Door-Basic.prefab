@@ -95,7 +95,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3658974435473899350}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: armature
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -216,7 +216,7 @@ GameObject:
   - component: {fileID: 5065882117632713776}
   - component: {fileID: 7135726269565894184}
   - component: {fileID: 4503168744708316821}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: Door.001
   m_TagString: Door
   m_Icon: {fileID: 0}
@@ -381,6 +381,7 @@ MonoBehaviour:
   player: {fileID: 0}
   active: {fileID: 2100000, guid: 64e13c1a2f7124c4092791cb34f1b106, type: 2}
   inActive: {fileID: 2100000, guid: 0c9d2dfd9700086408269653bb944277, type: 2}
+  Broken: {fileID: 2100000, guid: 1624db7cf24cf4b40b15269412367fc4, type: 2}
   panel: {fileID: -8256134651489076907}
   button: {fileID: 6821887585681450876}
   coolDownTimer: 0
@@ -441,7 +442,7 @@ AudioSource:
   m_GameObject: {fileID: 919132149155446097}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -2940319779576884067, guid: 2a4ad3de13830624f8bd4f394fa6cde3, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
@@ -540,7 +541,7 @@ GameObject:
   - component: {fileID: 2773674128382971474}
   - component: {fileID: 2421290309545087072}
   - component: {fileID: 4604770579832319462}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: DoorFrame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -626,7 +627,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4617384424336982626}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: Mesh01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -657,7 +658,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3923654790831891535}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: Scene_Root.001
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -691,7 +692,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4411799652950976345}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: Duplicate00
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -726,7 +727,7 @@ GameObject:
   - component: {fileID: 8098387103576783123}
   - component: {fileID: 7266222945806351331}
   - component: {fileID: 5229542982508473913}
-  m_Layer: 3
+  m_Layer: 12
   m_Name: Door-Basic
   m_TagString: Door
   m_Icon: {fileID: 0}
@@ -795,6 +796,8 @@ MonoBehaviour:
   source: {fileID: 5229542982508473913}
   dooropen: {fileID: 8300000, guid: ad9f617676701dd469d330144ee5b5e3, type: 3}
   doorclose: {fileID: 8300000, guid: f9f4fe8f152e21344a34a70d8bcea2d7, type: 3}
+  linkedButtons: []
+  linkedButtons2: []
   state: 0
 --- !u!65 &7266222945806351331
 BoxCollider:
@@ -826,7 +829,7 @@ AudioSource:
   m_GameObject: {fileID: 5045765538369610930}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -2940319779576884067, guid: 2a4ad3de13830624f8bd4f394fa6cde3, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
@@ -1186,7 +1189,7 @@ GameObject:
   - component: {fileID: 2621693797143626299}
   - component: {fileID: 9204760815089558435}
   - component: {fileID: 8361669200857964534}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: Door
   m_TagString: Door
   m_Icon: {fileID: 0}
@@ -1416,7 +1419,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5696077213539728216}
-  m_Layer: 3
+  m_Layer: 8
   m_Name: Duplicate01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1491,6 +1494,7 @@ MonoBehaviour:
   player: {fileID: 0}
   active: {fileID: 2100000, guid: 64e13c1a2f7124c4092791cb34f1b106, type: 2}
   inActive: {fileID: 2100000, guid: 0c9d2dfd9700086408269653bb944277, type: 2}
+  Broken: {fileID: 2100000, guid: 1624db7cf24cf4b40b15269412367fc4, type: 2}
   panel: {fileID: 6405901601909799206}
   button: {fileID: 6209888291184793469}
   coolDownTimer: 0
@@ -1551,7 +1555,7 @@ AudioSource:
   m_GameObject: {fileID: 8927393750068870115}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -2940319779576884067, guid: 2a4ad3de13830624f8bd4f394fa6cde3, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1

@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dec1fc471b4267147b3d1f80cb126b8b, type: 3}
   m_Name: Adrenaline
   m_EditorClassIdentifier: 
-  id: 5
+  id: 6
   objName: Adrenaline
   icon: {fileID: 0}
   prefab: {fileID: 0}
   duration: 20
-  useValue: 20
+  useValue: 1
