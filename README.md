@@ -66,9 +66,12 @@ CREDITS FOR ASSETS USED
 
 AUDIO ASSETS
 SCP Containment Breach Ultimate Edition Reborn (Used SFX and Music from root folder)(https://www.moddb.com/mods/scp-containment-breach-ultimate-edition)
+
 -Music
+
     -HeavyContainmentZone Ambiance Music
 -SFX
+
     -Big Door Close and Open
 
     -Door Close and Open
@@ -92,7 +95,9 @@ SCP Containment Breach Ultimate Edition Reborn (Used SFX and Music from root fol
     -Player Footsteps (Step 7 and Run 7)
 
 101SoundBoards.Com (https://www.101soundboards.com/boards/36964-scp-096)
+
 -Music
+
     -SCP 096 chase background music (Fear)
 
     -SCP 096 chase scream (chase)
@@ -102,46 +107,50 @@ SCP Containment Breach Ultimate Edition Reborn (Used SFX and Music from root fol
     -SCP 096 Rage Build (rage)
 
 
-Pixabay (freesound_community) (https://pixabay.com/sound-effects/search/evil%20laugh%20cartoon/) (https://pixabay.com/music/search/menu%20music%20horror/)(https://pixabay.com/music/search/quietphase/)
+Pixabay (freesound_community)
+  
 Music
-    -Twilight Game Menu (Siarhei_Korbut)
 
-    -Calm Ambient (QuietPhase)
+    -Twilight Game Menu (Siarhei_Korbut) (https://pixabay.com/music/search/menu%20music%20horror/)
+
+    -Calm Ambient (QuietPhase) (https://pixabay.com/music/search/quietphase/)
 
 SFX
 
-    -Cartoon Laugh
+    -Cartoon Laugh (https://pixabay.com/sound-effects/search/evil%20laugh%20cartoon/)
 
-Incompetech (https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100575)
+Incompetech
+ 
 Music
 
-    -Aftermath(Kevinmacleod)
+    -Aftermath(Kevinmacleod) (https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100575)
 
- MixKit (https://mixkit.co/free-sound-effects/heartbeat/)
+ MixKit
+
  SFX
 
-    -HeartBeat   
+    -HeartBeat (https://mixkit.co/free-sound-effects/heartbeat/)    
 
 GAME ASSETS
 
-UNITY ASSET STORE (https://assetstore.unity.com/packages/2d/textures-materials/blood-splatter-decal-package-7518) (https://assetstore.unity.com/packages/2d/textures-materials/deep-space-skybox-pack-11056)
-                  (https://assetstore.unity.com/packages/3d/props/low-poly-office-set-1-140-models-vnb-327126 )
-    -Blood Decal Pack
+UNITY ASSET STORE  
+                  
+    -Blood Decal Pack (https://assetstore.unity.com/packages/2d/textures-materials/blood-splatter-decal-package-7518)
 
-    -DeepSpaceSkybox Pack
+    -DeepSpaceSkybox Pack (https://assetstore.unity.com/packages/2d/textures-materials/deep-space-skybox-pack-11056)
 
-    -VNB - Office Set
+    -VNB - Office Set (https://assetstore.unity.com/packages/3d/props/low-poly-office-set-1-140-models-vnb-327126)
 
-SketchFab (https://sketchfab.com/3d-models/scp-096-scp-containment-breach-1fee9c4f8c364a40a3d85b5cdbd29a0f) (https://sketchfab.com/3d-models/scp-173-e4ef798fb0284b31bf90bad0d3bc7fc8)(https://sketchfab.com/3d-models/scp-door-scpcb-0ec30bd458564876894fbc261e12e5ff) 
-          (https://sketchfab.com/3d-models/containment-door-from-scpcb-with-doors-in-file-a2c7c2b9a72a4ec8881577a2df03f305)
-    -SCP 096 Model and Animations
+SketchFab   
+          
+    -SCP 096 Model and Animations (https://sketchfab.com/3d-models/scp-096-scp-containment-breach-1fee9c4f8c364a40a3d85b5cdbd29a0f)
 
-    -SCP 173 Model
+    -SCP 173 Model (https://sketchfab.com/3d-models/scp-173-e4ef798fb0284b31bf90bad0d3bc7fc8)
 
-    -Original Containment Breach Door
+    -Original Containment Breach Door (https://sketchfab.com/3d-models/scp-door-scpcb-0ec30bd458564876894fbc261e12e5ff)
 
-    -Original Containment Breach Gate
-    
+    -Original Containment Breach Gate (https://sketchfab.com/3d-models/containment-door-from-scpcb-with-doors-in-file-a2c7c2b9a72a4ec8881577a2df03f305)
+
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------
 
