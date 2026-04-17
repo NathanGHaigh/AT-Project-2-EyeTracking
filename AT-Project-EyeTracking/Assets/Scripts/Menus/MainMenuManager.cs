@@ -14,6 +14,8 @@ public class MainMenuManager : MonoBehaviour
 
     public GameObject OptionsPanel;
 
+    public GameObject CreditsPanel;
+
     public TMP_Dropdown graphicsDropDown;
     public Slider masterSlider, sfxSLider, musicSlider;
     public AudioMixer mainAudioMixer;
@@ -42,6 +44,16 @@ public class MainMenuManager : MonoBehaviour
     {
         // Load the credits scene or display the credits UI
         Debug.Log("Opening Credits...");
+        CreditsPanel.SetActive(true);
+        soundManager.PlaySFX(soundManager.menuSFXClick);
+
+    }
+
+    public void CloseCredits()
+    {
+        // Close the credits UI and return to the main menu
+        Debug.Log("Closing Credits...");
+        CreditsPanel.SetActive(false);
         soundManager.PlaySFX(soundManager.menuSFXClick);
     }
 
@@ -61,6 +73,16 @@ public class MainMenuManager : MonoBehaviour
         OptionsPanel.SetActive(false);
         soundManager.PlaySFX(soundManager.menuSFXClick);
         //ButtonsContainer.SetActive(true);
+    }
+
+    public void OpenGithub()
+    {
+        Application.OpenURL("https://github.com");
+    }
+
+    public void OpenIchio()
+    {
+        Application.OpenURL("https://www.youtube.com");
     }
 
     void ExitGame()

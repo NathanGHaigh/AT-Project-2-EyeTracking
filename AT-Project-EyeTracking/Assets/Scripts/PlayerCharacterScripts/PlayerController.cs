@@ -36,6 +36,8 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private LinearProgressBar staminaSlider;
 
+    [SerializeField] private LinearProgressBar blinkSlider;
+
     [SerializeField] private Image staminaIcon;
 
     [SerializeField] private Sprite idleSprite, movingSprite, sprintingSprite;
@@ -67,6 +69,10 @@ public class PlayerController : MonoBehaviour
     public bool activeAdrenaline = false;
     public float adrenalineDuration;
 
+    public Color buffColour;
+    public Color debuffColour;
+    public Color defaultColour;
+
     public GameObject DocumentUI;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -94,6 +100,7 @@ public class PlayerController : MonoBehaviour
         stamina = 10;
 
         staminaSlider = GameObject.Find("StaminaBar").GetComponent<LinearProgressBar>();
+        blinkSlider = GameObject.Find("BlinkBar").GetComponent<LinearProgressBar>();
         staminaSlider.maximum = maxStamina;
         staminaSlider.minimum = minStamina;
     }
@@ -386,18 +393,24 @@ public class PlayerController : MonoBehaviour
         if (activeEyedrops)
         {
             eyeDropDuration -= Time.deltaTime;
+            blinkSlider.GetComponentInChildren<LinearProgressBar>().SetColor(buffColour);
+            Debug.Log("Found bar: " + blinkSlider.GetComponentInChildren<LinearProgressBar>()?.gameObject.name);
             if (eyeDropDuration <= 0)
             {
-                eyeDropDuration = 0;
+                eyeDropDuration = 0;           
+                blinkSlider.GetComponentInChildren<LinearProgressBar>().SetColor(defaultColour);
                 activeEyedrops = false;
             }
         }
         if (activeAdrenaline)
         {
             adrenalineDuration -= Time.deltaTime;
+            staminaSlider.GetComponentInChildren<LinearProgressBar>().SetColor(buffColour);
+            Debug.Log("Found bar: " + staminaSlider.GetComponentInChildren<LinearProgressBar>()?.gameObject.name);
             if (adrenalineDuration <= 0)
             {
                 adrenalineDuration = 0;
+                staminaSlider.GetComponentInChildren<LinearProgressBar>().SetColor(defaultColour);
                 activeAdrenaline = false;
             }
         }

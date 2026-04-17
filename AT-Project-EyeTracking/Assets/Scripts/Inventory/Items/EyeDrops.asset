@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 5
   objName: Eyedrops
-  icon: {fileID: 21300000, guid: 5742bc704f8f22f4ca52ca48810d83fb, type: 3}
-  prefab: {fileID: 0}
+  icon: {fileID: 21300000, guid: bf675ddf44d6d054ca7be76bd78339b9, type: 3}
+  prefab: {fileID: 3293556282419324562, guid: 3f456b8395fac0746853a7992f91f9d0, type: 3}
   duration: 30
   useValue: -0.5

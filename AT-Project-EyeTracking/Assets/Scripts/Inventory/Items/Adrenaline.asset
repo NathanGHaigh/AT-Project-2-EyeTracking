@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 6
   objName: Adrenaline
-  icon: {fileID: 0}
-  prefab: {fileID: 0}
+  icon: {fileID: 21300000, guid: d53296f7f0997704bb4dbee0129dc47e, type: 3}
+  prefab: {fileID: 2374674175920867353, guid: 946502f3793f57543b1134d544cc742d, type: 3}
   duration: 20
   useValue: 1

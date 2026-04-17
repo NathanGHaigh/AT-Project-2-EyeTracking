@@ -9,8 +9,8 @@ public class LightLOD : MonoBehaviour
 {
     private Light _light;
     public bool LightShouldBeOn = true;
-    [Range(0,1)]
-    private float updateDelay = 0.1f;
+    [Range(0,1f)]
+    [SerializeField]private float updateDelay = 1f;
     [SerializeField]
     private List<LODAdjustments> LODLevels = new();
 
@@ -28,9 +28,9 @@ public class LightLOD : MonoBehaviour
 
     private IEnumerator AdjustLODQuality()
     {
-        float delay = updateDelay + updateDelay == 0 ? updateDelay : UnityEngine.Random.value / 20f;
+        float delay = updateDelay + (updateDelay == 0 ? updateDelay : UnityEngine.Random.value / 20f);
 
-        WaitForSeconds wait = new(delay);
+        WaitForSecondsRealtime wait = new(delay);
 
         while (true)
         {
@@ -41,6 +41,7 @@ public class LightLOD : MonoBehaviour
             }
             if(LightShouldBeOn)
             {
+                Debug.Log("Adjusting LOD for light: " + _light.name);
                 float squareDistanceToCamera = Vector3.SqrMagnitude(LightLODCamera.Instance.transform.position - transform.position);
 
                 for(int i = 0; i < LODLevels.Count; i++)

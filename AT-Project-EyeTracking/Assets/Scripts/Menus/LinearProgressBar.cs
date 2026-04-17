@@ -26,7 +26,12 @@ public class LinearProgressBar : MonoBehaviour
     public float currentValue;
     public Image mask;
     public Image fill;
-    public Color color;
+    [SerializeField] private Color color;
+
+    private void Start()
+    {
+        SetColor(color);
+    }
 
     private void Update()
     {
@@ -40,8 +45,12 @@ public class LinearProgressBar : MonoBehaviour
         float totalOffset = maximum - minimum;
         float fillAmount = currentOffset / totalOffset;
         mask.fillAmount = fillAmount;
-
-        fill.color = color;
     }
 
+    public void SetColor(Color newColor)
+    {
+        color = newColor;
+        fill.color = newColor;
+        Debug.Log("Color set to: " + newColor);
+    }
 }

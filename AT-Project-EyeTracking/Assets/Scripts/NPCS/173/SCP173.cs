@@ -42,7 +42,12 @@ public class SCP173 : MonoBehaviour
 
     [SerializeField] bool hasRoamPoint = false;
 
+    [SerializeField] private float roamTimer = 0f;
+
     public bool isMoving = false;
+
+    private float investigateTimer = 0f;
+    private const float investigateTimeout = 5f;
 
     void Start()
     {
@@ -85,53 +90,17 @@ public class SCP173 : MonoBehaviour
             return;
         }
 
-        if (!hasSeenPlayer)
-        {
-            RandomPointRoam();           
-        }
-        if(hasRoamPoint)
-        {
-            var time = 20f;
-            
-            time -= Time.deltaTime;
-            if(time <= 0)
-            {
-                hasRoamPoint = false;
-                RandomPointRoam();
-            }
-        }
-
         if (isMoving && agent.velocity.magnitude <= 0.1f)
         {
             isMoving = false;
         }
-
-        if (isMoving)
+        if(isMoving)
         {
             scp173Audio.PlayAudio();
         }
-
         else
-        {
+        { 
             scp173Audio.StopAudio();
-        }
-
-
-        if (hasEverSeenPlayer)
-        {
-            if (hasSeenPlayer)
-            {
-                lastSawPlayer = 0;
-            }
-            else
-            {
-                lastSawPlayer += Time.deltaTime;
-                if (lastSawPlayer > 60)
-                {
-                    if (!audioTrigger)
-                        audioTrigger = true;
-                }
-            }
         }
 
         beingLookedAt = BeingLookedAt();
@@ -146,7 +115,13 @@ public class SCP173 : MonoBehaviour
             lastPlayerPos = player.transform.position;
             hasSeenPlayer = true;
             hasEverSeenPlayer = true;
+            investigateTimer = 0f;
             // Check if being looked at
+
+            if(hasEverSeenPlayer)
+            {
+                 lastSawPlayer = 0;
+            }
 
             if (beingLookedAt)
             {
@@ -162,7 +137,7 @@ public class SCP173 : MonoBehaviour
                 return;
             }
 
-            if(DistancetoPlayer <= 3.5f)
+            if(DistancetoPlayer <= 2.5f)
             {
                 //Debug.Log("Killed Player");
                 KillPlayer();
@@ -174,10 +149,47 @@ public class SCP173 : MonoBehaviour
 
         else
         {
-            if (hasSeenPlayer && !beingLookedAt)
+            if (hasSeenPlayer)
             {
-                Move(lastPlayerPos);
-                isMoving = true;
+                lastSawPlayer += Time.deltaTime;
+                if (lastSawPlayer > 60 && !audioTrigger)
+                {
+                    audioTrigger = true;
+                }
+            }
+            if(hasSeenPlayer && !beingLookedAt)
+            { 
+                investigateTimer += Time.deltaTime;
+
+                float flatDistanceToLastPos = Vector3.Distance(
+                    new Vector3(transform.position.x, 0, transform.position.z), 
+                    new Vector3(lastPlayerPos.x, 0, lastPlayerPos.z)
+                    );
+                if (flatDistanceToLastPos <= minApproachDistance + 0.5f || investigateTimer > investigateTimeout)
+                {
+                    hasSeenPlayer = false;
+                    investigateTimer = 0f;
+                    hasRoamPoint = false;
+                }
+                else
+                {
+                    Move(lastPlayerPos);
+                    isMoving = true;
+                }
+            }
+            else if(!hasSeenPlayer)
+            {
+                RandomPointRoam();
+            }
+        } 
+        
+        if(hasRoamPoint)
+        {
+            roamTimer -= Time.deltaTime;
+            if(roamTimer <= 0)
+            {
+                hasRoamPoint = false;
+                roamTimer = 20f;
             }
         }
     }
