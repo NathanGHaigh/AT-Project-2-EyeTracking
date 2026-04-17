@@ -15,24 +15,31 @@ now using eye tracking as the input.
 Key Features and Changes
 
 -Environmental Interactions
-Players interact with buttons and objects using gaze-based positioning
+    
+    Players interact with buttons and objects using gaze-based positioning
 
 -Items and Pickups
-Item collection is controlled using eye position
+    
+    Item collection is controlled using eye position
 
 -Inventory System
-Navigation, Selection, Use and Dropping within the inventory is managed using the players eye position.
+    
+    Navigation, Selection, Use and Dropping within the inventory is managed using the players eye position.
 
 -SCP interactions
-SCP behaviour is respondent to where the player is looking.
+    
+    SCP behaviour is respondent to where the player is looking.
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------
 
 IMPLEMENTATION
 ------------------------------------------------------------------------------------------------------------------------------------------------------
 -Unity (Game Engine)
+
 -Beam Eye Tracker (Webcam based Eye-tracking software)
+
 -[Beam Eye Tracker Unity SDK]
+
 -[Blender] Used for custom assets within the game
 
 
@@ -131,6 +138,7 @@ Music
     -Aftermath(Kevinmacleod) (https://incompetech.com/music/royalty-free/index.html?isrc=USUAN1100575)
 
  MixKit
+ -
 
  SFX
 
