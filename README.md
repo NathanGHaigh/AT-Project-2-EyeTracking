@@ -65,12 +65,14 @@ CREDITS FOR ASSETS USED
 ------------------------------------------------------------------------------------------------------------------------------------------------------
 
 AUDIO ASSETS
+-
 SCP Containment Breach Ultimate Edition Reborn (Used SFX and Music from root folder)(https://www.moddb.com/mods/scp-containment-breach-ultimate-edition)
+-
 
--Music
+Music
 
     -HeavyContainmentZone Ambiance Music
--SFX
+SFX
 
     -Big Door Close and Open
 
@@ -95,8 +97,9 @@ SCP Containment Breach Ultimate Edition Reborn (Used SFX and Music from root fol
     -Player Footsteps (Step 7 and Run 7)
 
 101SoundBoards.Com (https://www.101soundboards.com/boards/36964-scp-096)
+-
 
--Music
+Music
 
     -SCP 096 chase background music (Fear)
 
@@ -107,7 +110,8 @@ SCP Containment Breach Ultimate Edition Reborn (Used SFX and Music from root fol
     -SCP 096 Rage Build (rage)
 
 
-Pixabay (freesound_community)
+Pixabay
+-
   
 Music
 
@@ -120,6 +124,7 @@ SFX
     -Cartoon Laugh (https://pixabay.com/sound-effects/search/evil%20laugh%20cartoon/)
 
 Incompetech
+-
  
 Music
 
@@ -132,8 +137,10 @@ Music
     -HeartBeat (https://mixkit.co/free-sound-effects/heartbeat/)    
 
 GAME ASSETS
+-
 
 UNITY ASSET STORE  
+-
                   
     -Blood Decal Pack (https://assetstore.unity.com/packages/2d/textures-materials/blood-splatter-decal-package-7518)
 
@@ -141,7 +148,8 @@ UNITY ASSET STORE
 
     -VNB - Office Set (https://assetstore.unity.com/packages/3d/props/low-poly-office-set-1-140-models-vnb-327126)
 
-SketchFab   
+SketchFab
+-   
           
     -SCP 096 Model and Animations (https://sketchfab.com/3d-models/scp-096-scp-containment-breach-1fee9c4f8c364a40a3d85b5cdbd29a0f)
 
